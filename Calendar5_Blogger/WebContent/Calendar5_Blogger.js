@@ -64,7 +64,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         mc: false,  // アイテムページの年[1]と月[2]の配列。
     };  // end of g
     var st = {  // 言語置換
-        enM: ["Jan.","Feb.","Mar.","Apr.","May","Jun.","Jul.","Aug.","Sept.","Oct.","Nov.","Dec."],
+        enM: ["Jan.","Feb.","Mar.","Apr.","May.","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec."],
         init: function() {
             st.f = /.jp$/i.test(location.hostname);  // jpドメインのときtrueそうでなければfalse。
             st.days = (st.f)? ["日","月","火","水","木","金","土"] : ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];  // 曜日の配列。
