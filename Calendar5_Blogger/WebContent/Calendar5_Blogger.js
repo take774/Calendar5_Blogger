@@ -130,7 +130,6 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 m.childNodes[0].title = st.left_arrow;
                 m.childNodes[0].id = "left_calendar";
             }
-
             var titleText = (st.f)?g.y + "年" + g.m + "月":st.enM[g.m-1] + " " + g.y + " ";
             titleText +=  (g.order=="published")?"":st.updated;
             m.childNodes[1].appendChild(nd.createTxt(titleText));
