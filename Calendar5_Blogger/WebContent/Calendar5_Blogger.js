@@ -6,11 +6,11 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             getArticles: function(json) {  // 指定した月のフィードを受け取る。
                 Array.prototype.push.apply(g.posts, json.feed.entry);// 投稿のフィードデータを配列に追加。
                 if (json.feed.openSearch$totalResults.$t < g.max) {  // 取得投稿数がg.maxより小さい時はすべて取得できたと考える。
-                    var re = /\d\d(?=T\d\d:\d\d:\d\d\.\d\d\d.\d\d:\d\d)/i;  //  フィードの日時データから日を取得するための正規表現パターン。
+                    var re = /\d\d(?=T\d\d:\d\d:\d\d\.\d\d\d.\d\d:\d\d)/i;  // フィードの日時データから日を取得するための正規表現パターン。
                     g.posts.forEach(function(e){  // 投稿のフィードデータについて
                         var d = Number(re.exec(e[g.order].$t));  // 投稿の日を取得。
                         g.dic[d] = g.dic[d] || [];  // 辞書の値の配列を初期化する。
-                        var url = (e.media$thumbnail)?e.media$thumbnail.url:null;  // サムネイルのurl。
+                        var url = (e.media$thumbnail)?e.media$thumbnail.url:null;  // サムネイルのURL。
                         g.dic[d].push([e.link[4].href, e.link[4].title, url]);  // 辞書の値の配列に[投稿のURL, 投稿タイトル, サムネイルのURL]の配列を入れて2次元配列にする。
                     });
                     var m = cal.createCalendar();  // フィードデータからカレンダーを作成する。
@@ -77,7 +77,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
     };  // end of st
     var cal = {  // カレンダーを作成するオブジェクト。
         _holidayC: "rgb(255, 0, 0)",  // 休日の文字色
-        _SatC: "rgb(0, 51, 255)",  //  土曜日の文字色
+        _SatC: "rgb(0, 51, 255)",  // 土曜日の文字色
         _nodes: null,
         init: function() {  // カレンダーのノードの不変部分の取得。
             cal._nodes = cal._createNodes();
@@ -144,7 +144,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 m.childNodes[2].id = "right_calendar";
             }
             var day =  caldt.getDay();  // 1日の曜日を取得。日曜日は0、土曜日は6になる。
-            var c = 9 + day;  // 1日の要素番号−１。
+            var c = 9 + day;  // 1日の要素番号-1。
             pt.dic = {};  // 日付、とカレンダーノードの辞書をリセットする。
             for(var i = 1; i < 1+g.em; i++) { // 1日から末日まで。
                 var d = m.childNodes[c+i];
@@ -169,7 +169,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
            return m;
         },
         _getHolidayC: function(node,i) {  // 祝日に色をつける。JSON文字列はhttps://p--q.blogspot.jp/2016/12/blogger10json.htmlを作成。
-            // キーは年、値は二元元配列。1次が月数、二次が祝日の配列。
+            // キーは年、値は2次元配列。1次が月数、2次が祝日の配列。
             var holidays = cl.defaults.Holidays;
             var arr = holidays[g.y][g.m-1];  // 祝日の配列を取得。
             if (arr.indexOf(i) != -1) {  // 祝日配列に日付があるとき。in演算子はインデックスの有無の確認をするだけ。
@@ -195,7 +195,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         createURL: function(max) {  // フィードを取得するためのURLを作成。
             var url = "/feeds/posts/summary?alt=json-in-script&orderby=" + g.order + "&" + g.order + "-min=" + g.y + "-" + fd.fm(g.m) + "-01T00:00:00%2B09:00&" + g.order + "-max=" + max;  // 1日0時0分0秒からmaxの日時までの投稿フィードを取得。データは最新の投稿から返ってくる。
             url += "&callback=Calendar5_Blogger.callback.getArticles&max-results=" + g.max;  // コールバック関数と最大取得投稿数を設定。
-            fd._writeScript(url);  // スクリプト注入でフィードを取得。。
+            fd._writeScript(url);  // スクリプト注入でフィードを取得。
         },
         fm: function(m) {  // 数値を2桁の固定長にする。
             return ("0" + m).slice(-2);
@@ -246,12 +246,12 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         _postNode: function(arr) {  // 引数は[投稿のURL, 投稿タイトル, サムネイルのURL]の配列。
             var p = pt._nodes.cloneNode(true);
             if (arr[2]) {  // サムネイルがあるとき
-                p.childNodes[0].childNodes[0].href = arr[0];  // 投稿のurlを取得。
-                p.childNodes[0].childNodes[0].childNodes[0].src = arr[2];  // サムネイル画像のurlを取得。
+                p.childNodes[0].childNodes[0].href = arr[0];  // 投稿のURLを取得。
+                p.childNodes[0].childNodes[0].childNodes[0].src = arr[2];  // サムネイル画像のURLを取得。
             } else {
                 p.childNodes[0].setAttribute("style","display:none");  // サムネイルがないときはノードを非表示にする。
             }
-            p.childNodes[1].childNodes[0].href = arr[0];  // 投稿のurlを取得。
+            p.childNodes[1].childNodes[0].href = arr[0];  // 投稿のURLを取得。
             p.childNodes[1].childNodes[0].appendChild(nd.createTxt(arr[1]))  // 投稿タイトルを取得。
             return p;
         },
@@ -273,7 +273,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         },
         getPostDate: function() {  // アイテムページのURLからhtmlファイル名を比較して投稿日とハイライトする投稿番号を取得。
             var days = Object.keys(g.dic);  // 投稿のある日付の配列を取得。
-            for (i=0;i<days.length;i++) {  // forEachメソッドでは途中で抜けれないのでfor文を使う。
+            for (i=0;i<days.length;i++) {  // forEachメソッドでは途中で抜けられないのでfor文を使う。
                 var d = days[i];  // 日付を取得。
                 var posts = g.dic[d]; // 各日付の投稿の配列を取得。
                 for (j=0;j<posts.length;j++) {  // 各投稿について
@@ -394,7 +394,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
     return cl;  // グローバルスコープにオブジェクトを出す。
 }();
 Calendar5_Blogger.defaults["StartYear"] = 2013; // 遡る最大年。
-Calendar5_Blogger.defaults["StartMonth"] = 3; //  遡る最大月。
-//  祝日一覧
+Calendar5_Blogger.defaults["StartMonth"] = 3; // 遡る最大月。
+// 祝日一覧
 Calendar5_Blogger.defaults["Holidays"] = {"2013":[[1,14],[11],[20],[29],[3,4,5,6],[],[15],[],[16,23],[14],[3,4,23],[23]],"2014":[[1,13],[11],[21],[29],[3,4,5,6],[],[21],[],[15,23],[13],[3,23,24],[23]],"2015":[[1,12],[11],[21],[29],[3,4,5,6],[],[20],[],[21,22,23],[12],[3,23],[23]],"2016":[[1,11],[11],[20,21],[29],[3,4,5],[],[18],[11],[19,22],[10],[3,23],[23]],"2017":[[1,2,9],[11],[20],[29],[3,4,5],[],[17],[11],[18,23],[9],[3,23],[23]],"2018":[[1,8],[11,12],[21],[29,30],[3,4,5],[],[16],[11],[17,23,24],[8],[3,23],[23,24]],"2019":[[1,14],[11],[21],[29],[3,4,5,6],[],[15],[11,12],[16,23],[14],[3,4,23],[23]],"2020":[[1,13],[11],[20],[29],[3,4,5,6],[],[20],[11],[21,22],[12],[3,23],[23]],"2021":[[1,11],[11],[20],[29],[3,4,5],[],[19],[11],[20,23],[11],[3,23],[23]],"2022":[[1,10],[11],[21],[29],[3,4,5],[],[18],[11],[19,23],[10],[3,23],[23]],"2023":[[1,9],[11],[21],[29],[3,4,5],[],[17],[11],[18,23],[9],[3,23],[23]],"2024":[[1,8],[11,12],[20],[29],[3,4,5,6],[],[15],[11,12],[16,22,23],[14],[3,4,23],[23]],"2025":[[1,13],[11],[20],[29],[3,4,5,6],[],[21],[11],[15,23],[13],[3,23,24],[23]],"2026":[[1,12],[11],[20],[29],[3,4,5,6],[],[20],[11],[21,22,23],[12],[3,23],[23]],"2027":[[1,11],[11],[21,22],[29],[3,4,5],[],[19],[11],[20,23],[11],[3,23],[23]],"2028":[[1,10],[11],[20],[29],[3,4,5],[],[17],[11],[18,22],[9],[3,23],[23]],"2029":[[1,8],[11,12],[20],[29,30],[3,4,5],[],[16],[11],[17,23,24],[8],[3,23],[23,24]],"2030":[[1,14],[11],[20],[29],[3,4,5,6],[],[15],[11,12],[16,23],[14],[3,4,23],[23]]};
 Calendar5_Blogger.all("calendar5_blogger");  // idがcalendar5_bloggerの要素にカレンダーを表示させる。
