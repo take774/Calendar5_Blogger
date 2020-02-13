@@ -35,7 +35,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         all: function(elemID) {  // ここから開始する。
             g.elem = document.getElementById(elemID);  // idから追加する対象の要素を取得。
             if (g.elem) {  // 追加対象の要素が存在するとき
-            	st.init();  // 言語設定。
+                st.init();  // 言語設定。
                 cal.init();  // カレンダーのノードの不変部分を作成しておく。
                 pt.init();  // 投稿リストのノードの不変部分を作成しておく。
                 var dt; // 日付オブジェクト。
@@ -64,72 +64,72 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         mc: false,  // アイテムページの年[1]と月[2]の配列。
     };  // end of g
     var st = {  // 言語置換
-    	enM: ["Jan.","Feb.","Mar.","Apr.","May","Jun.","Jul.","Aug.","Sept.","Oct.","Nov.","Dec."],
-		init: function() {
-			st.f = /.jp$/i.test(location.hostname);  // jpドメインのときtrueそうでなければfalse。
-			st.days = (st.f)?["日","月","火","水","木","金","土"]:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];  // 曜日の配列。
-			st.left_arrow = (st.f)?"翌月へ":"Newer";
-			st.updated = (st.f)?"更新":"updated";
-			st.published = (st.f)?"公開":"published";
-			st.tooltip = (st.f)?"公開日と更新日を切り替える":"Switching between published and updated";
-			st.right_arrow = (st.f)?"前月へ":"Older";
-		}
+        enM: ["Jan.","Feb.","Mar.","Apr.","May","Jun.","Jul.","Aug.","Sept.","Oct.","Nov.","Dec."],
+        init: function() {
+            st.f = /.jp$/i.test(location.hostname);  // jpドメインのときtrueそうでなければfalse。
+            st.days = (st.f)?["日","月","火","水","木","金","土"]:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];  // 曜日の配列。
+            st.left_arrow = (st.f)?"翌月へ":"Newer";
+            st.updated = (st.f)?"更新":"updated";
+            st.published = (st.f)?"公開":"published";
+            st.tooltip = (st.f)?"公開日と更新日を切り替える":"Switching between published and updated";
+            st.right_arrow = (st.f)?"前月へ":"Older";
+        }
     };  // end of st
     var cal = {  // カレンダーを作成するオブジェクト。
         _holidayC: "rgb(255, 0, 0)",  // 休日の文字色
         _SatC: "rgb(0, 51, 255)",  //  土曜日の文字色
         _nodes: null,
         init: function() {  // カレンダーのノードの不変部分の取得。
-        	cal._nodes = cal._createNodes();
+            cal._nodes = cal._createNodes();
         },
         _createNodes: function() {  // カレンダーのノードの不変部分を作成しておく。
-        	var m = nd.createElem("div");
-        	m.setAttribute("style","display:flex;flex-wrap:wrap;");
-        	var a = nd.createElem("div");
-        	a.setAttribute("style","flex:0 0 14%;text-align:center;");
-        	m.appendChild(a);
-        	var t =  nd.createElem("div");
-        	t.setAttribute("style","flex:1 0 72%;text-align:center;cursor:pointer;")
-        	m.appendChild(t);
-        	m.appendChild(a.cloneNode(true));
-        	var d = nd.createElem("div");
-        	d.setAttribute("style","flex:1 0 14%;text-align:center;");
-        	st.days.forEach(function(e,i){  // 1行目に曜日を表示させる。2番目の引数は配列のインデックス。
-        		var node = d.cloneNode(true);
-        		node.appendChild(nd.createTxt(st.days[i]));
+            var m = nd.createElem("div");
+            m.setAttribute("style","display:flex;flex-wrap:wrap;");
+            var a = nd.createElem("div");
+            a.setAttribute("style","flex:0 0 14%;text-align:center;");
+            m.appendChild(a);
+            var t =  nd.createElem("div");
+            t.setAttribute("style","flex:1 0 72%;text-align:center;cursor:pointer;")
+            m.appendChild(t);
+            m.appendChild(a.cloneNode(true));
+            var d = nd.createElem("div");
+            d.setAttribute("style","flex:1 0 14%;text-align:center;");
+            st.days.forEach(function(e,i){  // 1行目に曜日を表示させる。2番目の引数は配列のインデックス。
+                var node = d.cloneNode(true);
+                node.appendChild(nd.createTxt(st.days[i]));
                 cal._getDayC(node,i);  // 曜日の色をつける。
                 if (!st.f) {
                     node.style.fontSize = "80%";  // 英語表記では1行に収まらないのでフォントサイズを縮小。
                 }
                 m.appendChild(node);  // カレンダーのflexコンテナに追加。
             });
-        	d.className = "nopost";
-        	for (i=0;i<42;i++) {  // カレンダーの5行目まで作成。
-        		m.appendChild(cal._createDateNodes(d));  // カレンダーのflexコンテナに追加。
-        	}
-        	d.style.display = "none";  // カレンダーの6行目はデフォルトでは表示させない。
-        	for (i=0;i<7;i++) {
-        		m.appendChild(cal._createDateNodes(d));  // カレンダーのflexコンテナに追加。
-        	}
-        	return m;
+            d.className = "nopost";
+            for (i=0;i<42;i++) {  // カレンダーの5行目まで作成。
+                m.appendChild(cal._createDateNodes(d));  // カレンダーのflexコンテナに追加。
+            }
+            d.style.display = "none";  // カレンダーの6行目はデフォルトでは表示させない。
+            for (i=0;i<7;i++) {
+                m.appendChild(cal._createDateNodes(d));  // カレンダーのflexコンテナに追加。
+            }
+            return m;
         },
         _createDateNodes: function(d) {
-    		var node = d.cloneNode(true);
-    		cal._getDayC(node,i%7);  // 曜日の色をつける。
-    		return node;
+            var node = d.cloneNode(true);
+            cal._getDayC(node,i%7);  // 曜日の色をつける。
+            return node;
         },
         createCalendar:  function() {  // カレンダーのHTML要素を作成。
-        	var m = cal._nodes.cloneNode(true);
-        	var dt = new Date();  // 今日の日付オブジェクトを取得。
-        	var now = new Date(dt.getFullYear(), dt.getMonth(),1).getTime();  // 今月の1日のミリ秒を取得。
-        	var caldt = new Date(g.y, g.m-1,1);
-        	var caldate = caldt.getTime();  // カレンダーの1日のミリ秒を取得。
-        	if (now > caldate) {  // 表示カレンダーの月が現在より過去のときのみ左矢印を表示させる。
-        		m.childNodes[0].appendChild(nd.createTxt('\u00ab'));
-        		m.childNodes[0].style.cursor = "pointer";  // マウスポインタの形状を変化させる。
-        		m.childNodes[0].title = st.left_arrow;
-        		m.childNodes[0].id = "left_calendar";
-        	}
+            var m = cal._nodes.cloneNode(true);
+            var dt = new Date();  // 今日の日付オブジェクトを取得。
+            var now = new Date(dt.getFullYear(), dt.getMonth(),1).getTime();  // 今月の1日のミリ秒を取得。
+            var caldt = new Date(g.y, g.m-1,1);
+            var caldate = caldt.getTime();  // カレンダーの1日のミリ秒を取得。
+            if (now > caldate) {  // 表示カレンダーの月が現在より過去のときのみ左矢印を表示させる。
+                m.childNodes[0].appendChild(nd.createTxt('\u00ab'));
+                m.childNodes[0].style.cursor = "pointer";  // マウスポインタの形状を変化させる。
+                m.childNodes[0].title = st.left_arrow;
+                m.childNodes[0].id = "left_calendar";
+            }
 
             var titleText = (st.f)?g.y + "年" + g.m + "月":st.enM[g.m-1] + " " + g.y + " ";
             titleText +=  (g.order=="published")?"":st.updated;
@@ -139,22 +139,22 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             dt = new Date(cl.defaults.StartYear,cl.defaults.StartMonth-1,1);  // 最初の投稿月の日付オブジェクトを取得。
             var firstpost = new Date(dt.getFullYear(), dt.getMonth(),1).getTime();  // 1日のミリ秒を取得。
             if (firstpost < caldate) {  // 表示カレンダーの月が初投稿月より未来のときのみ右矢印を表示させる。
-        		m.childNodes[2].appendChild(nd.createTxt('\u00bb'));
-        		m.childNodes[2].style.cursor = "pointer";  // マウスポインタの形状を変化させる。
-        		m.childNodes[2].title = st.right_arrow;
-        		m.childNodes[2].id = "right_calendar";
+                m.childNodes[2].appendChild(nd.createTxt('\u00bb'));
+                m.childNodes[2].style.cursor = "pointer";  // マウスポインタの形状を変化させる。
+                m.childNodes[2].title = st.right_arrow;
+                m.childNodes[2].id = "right_calendar";
             }
             var day =  caldt.getDay();  // 1日の曜日を取得。日曜日は0、土曜日は6になる。
             var c = 9 + day;  // 1日の要素番号−１。
             pt.dic = {};  // 日付、とカレンダーノードの辞書をリセットする。
             for(var i = 1; i < 1+g.em; i++) { // 1日から末日まで。
-            	var d = m.childNodes[c+i];
-            	d.appendChild(nd.createTxt(i));
-            	var t = "";  // nullはundefinedと表示されるのでだめ。
+                var d = m.childNodes[c+i];
+                d.appendChild(nd.createTxt(i));
+                var t = "";  // nullはundefinedと表示されるのでだめ。
                 if (i in g.dic) {  // 辞書のキーに日があるとき
-                	pt.dic[i] = d;  // アイテムページで投稿リストを展開するための辞書。keyが日付、値はカレンダーのノード。
+                    pt.dic[i] = d;  // アイテムページで投稿リストを展開するための辞書。keyが日付、値はカレンダーのノード。
                     g.dic[i].forEach(function(arr) {  // title属性に投稿タイトルのみ入れる。
-                    	t += (t)?"\n" + "\u30fb" + arr[1]:"\u30fb" + arr[1];
+                        t += (t)?"\n" + "\u30fb" + arr[1]:"\u30fb" + arr[1];
                     });
                     d.title = t;
                     d.className = "post";
@@ -164,21 +164,21 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             }
            if (day+g.em>35) {  // 最終行の表示。
                for (var i = 45;i<52 ;i++) {
-            	   m.childNodes[i].style.display = null;
+                    m.childNodes[i].style.display = null;
                }
            }
            return m;
         },
         _getHolidayC: function(node,i) {  // 祝日に色をつける。JSON文字列はhttps://p--q.blogspot.jp/2016/12/blogger10json.htmlを作成。
             // キーは年、値は二元元配列。1次が月数、二次が祝日の配列。
-        	var holidays = cl.defaults.Holidays;
-        	var arr = holidays[g.y][g.m-1];  // 祝日の配列を取得。
+            var holidays = cl.defaults.Holidays;
+            var arr = holidays[g.y][g.m-1];  // 祝日の配列を取得。
             if (arr.indexOf(i) != -1) {  // 祝日配列に日付があるとき。in演算子はインデックスの有無の確認をするだけ。
                 node.style.color = cal._holidayC;
             }
         },
         _getDayC: function(node,r){  // 曜日の色をつける。オブジェクトの参照渡しを利用。
-        	node.setAttribute("data-remainder",r);  // ノードに曜日番号を付ける。data-から始まるプロパティにしないとNode.cloneNode(true)で消えてしまう。
+            node.setAttribute("data-remainder",r);  // ノードに曜日番号を付ける。data-から始まるプロパティにしないとNode.cloneNode(true)で消えてしまう。
             if (r==0) {  // 日曜日のとき
                 node.style.color = cal._holidayC;
             } else if (r==6) {  // 土曜日のとき
@@ -207,57 +207,57 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             fd.createURL(max);  // フィードを取得するためのURLを作成。
         },
         removeParam: function(thisUrl) {
-        	return thisUrl.replace(/\?m=[01][&\?]/,"?").replace(/[&\?]m=[01]/,"");  // ウェブバージョンとモバイルサイトのパラメータを削除。
+            return thisUrl.replace(/\?m=[01][&\?]/,"?").replace(/[&\?]m=[01]/,"");  // ウェブバージョンとモバイルサイトのパラメータを削除。
         }
     };  // end of fd
     var nd = {  // ノード関連。
-		createElem: function(tag) {  // tagの要素を作成して返す関数。
-			return document.createElement(tag);
-		},
-		createTxt: function(txt) {  // テキストノードを返す関数。
-			return document.createTextNode(txt);
-		},
+        createElem: function(tag) {  // tagの要素を作成して返す関数。
+            return document.createElement(tag);
+        },
+        createTxt: function(txt) {  // テキストノードを返す関数。
+            return document.createTextNode(txt);
+        },
     };  // end of nd
     var pt = {  // その日の投稿リストを表示
-		dic: {},  // keyが日付、値がカレンダーのノードの辞書。
-		elem: null,  // 投稿リストを表示させるノード。
-		_nodes: null,  // 投稿リストのノードの不変部分
-		_reF: /\w+\.html/,  // htmlファイル名を抽出する正規表現パターン。
-		init: function() {
-			pt._nodes = pt._createNodes();  // 投稿リストのノードの不変部分の取得。
-			pt.elem = nd.createElem("div");  // 投稿リストの年月日を表示する要素の作成。
-			pt.elem.setAttribute("style","display:flex;flex-direction:column;padding-top:5px;text-align:center;");
-			var thisUrl = fd.removeParam(document.URL);  // URLからパラメータを除去する。
-			pt._html = pt._reF.exec(thisUrl);  // URLからhtmlファイル名を取得。
-		},
-		_createNodes: function() {  // 投稿リストのノードの不変部分を作成しておく。
-			var p = nd.createElem("div");
-			p.setAttribute("style","border-top:dashed 1px rgba(128,128,128,.5);padding-top:5px;");
-			p.appendChild(nd.createElem("div"));
-			p.childNodes[0].setAttribute("style","float:left;padding:0 5px 5px 0;");
-			p.childNodes[0].appendChild(nd.createElem("a"));
-			p.childNodes[0].childNodes[0].target = "_blank";
-			p.childNodes[0].childNodes[0].appendChild(nd.createElem("img"));
-			p.appendChild(nd.createElem("div"));
-			p.childNodes[1].setAttribute("style","text-align:left;");
-			p.childNodes[1].appendChild(nd.createElem("a"));
-			p.childNodes[1].childNodes[0].target = "_blank";
-			return p;
-		},
-		_postNode: function(arr) {  // 引数は[投稿のURL, 投稿タイトル, サムネイルのURL]の配列。
-			var p = pt._nodes.cloneNode(true);
-			if (arr[2]) {  // サムネイルがあるとき
-				p.childNodes[0].childNodes[0].href = arr[0];  // 投稿のurlを取得。
-				p.childNodes[0].childNodes[0].childNodes[0].src = arr[2];  // サムネイル画像のurlを取得。
-			} else {
-				p.childNodes[0].setAttribute("style","display:none");  // サムネイルがないときはノードを非表示にする。
-			}
-			p.childNodes[1].childNodes[0].href = arr[0];  // 投稿のurlを取得。
-			p.childNodes[1].childNodes[0].appendChild(nd.createTxt(arr[1]))  // 投稿タイトルを取得。
-			return p;
-		},
-		createPostList: function(postNo) {  // 投稿リストのタイトルを作成。2番目の引数はハイライトする投稿の要素番号。
-			var d = parseInt(eh.node.textContent,10);  // 日付を取得。
+        dic: {},  // keyが日付、値がカレンダーのノードの辞書。
+        elem: null,  // 投稿リストを表示させるノード。
+        _nodes: null,  // 投稿リストのノードの不変部分
+        _reF: /\w+\.html/,  // htmlファイル名を抽出する正規表現パターン。
+        init: function() {
+            pt._nodes = pt._createNodes();  // 投稿リストのノードの不変部分の取得。
+            pt.elem = nd.createElem("div");  // 投稿リストの年月日を表示する要素の作成。
+            pt.elem.setAttribute("style","display:flex;flex-direction:column;padding-top:5px;text-align:center;");
+            var thisUrl = fd.removeParam(document.URL);  // URLからパラメータを除去する。
+            pt._html = pt._reF.exec(thisUrl);  // URLからhtmlファイル名を取得。
+        },
+        _createNodes: function() {  // 投稿リストのノードの不変部分を作成しておく。
+            var p = nd.createElem("div");
+            p.setAttribute("style","border-top:dashed 1px rgba(128,128,128,.5);padding-top:5px;");
+            p.appendChild(nd.createElem("div"));
+            p.childNodes[0].setAttribute("style","float:left;padding:0 5px 5px 0;");
+            p.childNodes[0].appendChild(nd.createElem("a"));
+            p.childNodes[0].childNodes[0].target = "_blank";
+            p.childNodes[0].childNodes[0].appendChild(nd.createElem("img"));
+            p.appendChild(nd.createElem("div"));
+            p.childNodes[1].setAttribute("style","text-align:left;");
+            p.childNodes[1].appendChild(nd.createElem("a"));
+            p.childNodes[1].childNodes[0].target = "_blank";
+            return p;
+        },
+        _postNode: function(arr) {  // 引数は[投稿のURL, 投稿タイトル, サムネイルのURL]の配列。
+            var p = pt._nodes.cloneNode(true);
+            if (arr[2]) {  // サムネイルがあるとき
+                p.childNodes[0].childNodes[0].href = arr[0];  // 投稿のurlを取得。
+                p.childNodes[0].childNodes[0].childNodes[0].src = arr[2];  // サムネイル画像のurlを取得。
+            } else {
+                p.childNodes[0].setAttribute("style","display:none");  // サムネイルがないときはノードを非表示にする。
+            }
+            p.childNodes[1].childNodes[0].href = arr[0];  // 投稿のurlを取得。
+            p.childNodes[1].childNodes[0].appendChild(nd.createTxt(arr[1]))  // 投稿タイトルを取得。
+            return p;
+        },
+        createPostList: function(postNo) {  // 投稿リストのタイトルを作成。2番目の引数はハイライトする投稿の要素番号。
+            var d = parseInt(eh.node.textContent,10);  // 日付を取得。
             if (!st.f) {  // 投稿リストのタイトルを設定。
                 pt.elem.textContent = g.order + ": " + st.enM[g.m-1] + " " + d + " " + g.y;
             } else {
@@ -265,37 +265,37 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 pt.elem.textContent = g.y + "/" + g.m + "/" + d + "(" + st.days[eh.node.getAttribute("data-remainder")] + ") " + order;
             }
             g.dic[d].forEach(function(e,i) {  // 選択している日付の投稿リストを作成。
-            	pt.elem.appendChild(pt._postNode(e));
-            	if (i==postNo) {  // ハイライトする投稿のとき
-            		var p = pt.elem.lastChild;  // ハイライトする投稿のリストのノードを取得。
-            		p.setAttribute("style",p.style.cssText + "background-color:#eee;border:solid 1px #dddddd;border-radius:5px;pointer-events:none;");  // アンカータグのリンクも無効にする。
-            	}
+                pt.elem.appendChild(pt._postNode(e));
+                if (i==postNo) {  // ハイライトする投稿のとき
+                    var p = pt.elem.lastChild;  // ハイライトする投稿のリストのノードを取得。
+                    p.setAttribute("style",p.style.cssText + "background-color:#eee;border:solid 1px #dddddd;border-radius:5px;pointer-events:none;");  // アンカータグのリンクも無効にする。
+                }
             });
-		},
-		getPostDate: function() {  // アイテムページのURLからhtmlファイル名を比較して投稿日とハイライトする投稿番号を取得。
-			var days = Object.keys(g.dic);  // 投稿のある日付の配列を取得。
-			for (i=0;i<days.length;i++) {  // forEachメソッドでは途中で抜けれないのでfor文を使う。
-				var d = days[i];  // 日付を取得。
-				var posts = g.dic[d]; // 各日付の投稿の配列を取得。
-				for (j=0;j<posts.length;j++) {  // 各投稿について
-					if (pt._html[0] == pt._reF.exec(posts[j])[0]) {  // 投稿のhtmlファイル名が一致するとき。フィードは.comで返ってきてTDLが異なるのでURL直接は比較できない。
-		            	eh.node =  pt.dic[d];  // カレンダーの日付のノードを取得。
-		            	pt.createPostList(j);  // 投稿リストの作成。ハイライトする投稿の要素番号も渡す。
-		            	return;  // for文を抜ける。
-		            }
-				}
-			}
-		},
-		getHighlightPostNo: function() {  // アイテムページのURLからhtmlファイル名を比較してハイライトする投稿番号を取得。
-			var arr = g.dic[eh.node.textContent];  // その日付の投稿リストを取得。
-			for (i=0;i<arr.length;i++) {
-				if (pt._html[0] == pt._reF.exec(arr[i])[0]) {  // 投稿のhtmlファイル名が一致するとき。フィードは.comで返ってきてTDLが異なるのでURL直接は比較できない。
-					pt.createPostList(i);  // 投稿リストの作成。ハイライトする投稿の要素番号も渡す。
-					return;
-				}
-			}
-			pt.createPostList(null);  // ハイライトする投稿番号がなかった時はnullを渡す。
-		}
+        },
+        getPostDate: function() {  // アイテムページのURLからhtmlファイル名を比較して投稿日とハイライトする投稿番号を取得。
+            var days = Object.keys(g.dic);  // 投稿のある日付の配列を取得。
+            for (i=0;i<days.length;i++) {  // forEachメソッドでは途中で抜けれないのでfor文を使う。
+                var d = days[i];  // 日付を取得。
+                var posts = g.dic[d]; // 各日付の投稿の配列を取得。
+                for (j=0;j<posts.length;j++) {  // 各投稿について
+                    if (pt._html[0] == pt._reF.exec(posts[j])[0]) {  // 投稿のhtmlファイル名が一致するとき。フィードは.comで返ってきてTDLが異なるのでURL直接は比較できない。
+                        eh.node =  pt.dic[d];  // カレンダーの日付のノードを取得。
+                        pt.createPostList(j);  // 投稿リストの作成。ハイライトする投稿の要素番号も渡す。
+                        return;  // for文を抜ける。
+                    }
+                }
+            }
+        },
+        getHighlightPostNo: function() {  // アイテムページのURLからhtmlファイル名を比較してハイライトする投稿番号を取得。
+            var arr = g.dic[eh.node.textContent];  // その日付の投稿リストを取得。
+            for (i=0;i<arr.length;i++) {
+                if (pt._html[0] == pt._reF.exec(arr[i])[0]) {  // 投稿のhtmlファイル名が一致するとき。フィードは.comで返ってきてTDLが異なるのでURL直接は比較できない。
+                    pt.createPostList(i);  // 投稿リストの作成。ハイライトする投稿の要素番号も渡す。
+                    return;
+                }
+            }
+            pt.createPostList(null);  // ハイライトする投稿番号がなかった時はnullを渡す。
+        }
     };  // end of pt
     var eh = {  // イベントハンドラオブジェクト。
         node: null,  // 投稿一覧を表示している日付のノード。
@@ -312,9 +312,9 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                     }
                     eh.node = target;  // 投稿を表示させるノードを取得。
                     if (g.mc) {  // アイテムページの時
-                    	pt.getHighlightPostNo();  // ハイライト付きで投稿リストを展開する。
+                        pt.getHighlightPostNo();  // ハイライト付きで投稿リストを展開する。
                     } else {  // アイテムページ以外の時
-                    	pt.createPostList(null);  // ハイライトする投稿番号はnullを渡す。
+                        pt.createPostList(null);  // ハイライトする投稿番号はnullを渡す。
                     }
                     break;
                 case "nopost":  // 投稿がない日のとき
@@ -327,21 +327,21 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                     }
                     break;
                 default:
-                	var dt = new Date(g.y, g.m-1, 1);  // 表示しているカレンダーの1日の日付オブジェクトを取得。
+                    var dt = new Date(g.y, g.m-1, 1);  // 表示しているカレンダーの1日の日付オブジェクトを取得。
                     switch (target.id) {
                         case "title_calendar":  // 公開日と更新日を切り替える。
-                        	target.style.pointerEvents = "none";  // 連続クリックできないようにする。
+                            target.style.pointerEvents = "none";  // 連続クリックできないようにする。
                             g.order = (g.order=="published")?"updated":"published";
                             fd.getFeed(dt);
                             break;
                         case "left_calendar":
-                        	target.style.pointerEvents = "none";  // 連続クリックできないようにする。
+                            target.style.pointerEvents = "none";  // 連続クリックできないようにする。
                             dt.setMonth(dt.getMonth() + 1);  // 翌月の日付オブジェクトを取得。
                             fd.getFeed(dt);
                             break;
                         case "right_calendar":
-                        	target.style.pointerEvents = "none";  // 連続クリックできないようにする。
-                        	dt.setMonth(dt.getMonth() - 1);  // 前月の日付オブジェクトを取得。
+                            target.style.pointerEvents = "none";  // 連続クリックできないようにする。
+                            dt.setMonth(dt.getMonth() - 1);  // 前月の日付オブジェクトを取得。
                             fd.getFeed(dt);
                             break;
                     }
