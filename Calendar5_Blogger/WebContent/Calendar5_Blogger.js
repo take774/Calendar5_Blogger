@@ -157,7 +157,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                     });
                     d.title = t;
                     d.className = "post";
-                    d.setAttribute("style", d.style.cssText + "background-color:rgba(128,128,128,.4);border-radius:50%;cursor:pointer;");
+                    d.setAttribute("style", d.style.cssText + "background-color:rgba(128,128,128,.4);border-radius:50%;cursor:pointer;margin-bottom:0px;");
                 }
                 cal._getHolidayC(d, i);  // 祝日に色をつける。
             }
