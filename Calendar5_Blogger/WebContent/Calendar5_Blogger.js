@@ -335,11 +335,13 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                             target.style.pointerEvents = "none";  // 連続クリックできないようにする。
                             dt.setMonth(dt.getMonth() + 1);  // 翌月の日付オブジェクトを取得。
                             fd.getFeed(dt);
+                            pt.elem.textContent = null;  // 表示を消す。
                             break;
                         case "right_calendar":
                             target.style.pointerEvents = "none";  // 連続クリックできないようにする。
                             dt.setMonth(dt.getMonth() - 1);  // 前月の日付オブジェクトを取得。
                             fd.getFeed(dt);
+                            pt.elem.textContent = null;  // 表示を消す。
                             break;
                     }
             }
