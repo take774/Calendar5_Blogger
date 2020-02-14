@@ -250,7 +250,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 p.childNodes[0].setAttribute("style", "display:none");  // サムネイルがないときはノードを非表示にする。
             }
             p.childNodes[1].childNodes[0].href = arr[0];  // 投稿のURLを取得。
-            p.childNodes[1].childNodes[0].appendChild(nd.createTxt(arr[1]))  // 投稿タイトルを取得。
+            p.childNodes[1].childNodes[0].appendChild(nd.createTxt(arr[1]));  // 投稿タイトルを取得。
             return p;
         },
         createPostList: function(postNo) {  // 投稿リストのタイトルを作成。2番目の引数はハイライトする投稿の要素番号。
