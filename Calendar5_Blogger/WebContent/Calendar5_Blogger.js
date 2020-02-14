@@ -89,7 +89,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             a.setAttribute("style", "flex:0 0 14%;text-align:center;");
             m.appendChild(a);
             var t = nd.createElem("div");
-            t.setAttribute("style", "flex:1 0 72%;text-align:center;cursor:pointer;")
+            t.setAttribute("style", "flex:1 0 72%;text-align:center;cursor:pointer;");
             m.appendChild(t);
             m.appendChild(a.cloneNode(true));
             var d = nd.createElem("div");
