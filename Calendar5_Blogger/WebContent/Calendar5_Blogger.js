@@ -69,10 +69,10 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             st.f = /.jp$/i.test(location.hostname);  // jpドメインのときtrueそうでなければfalse。
             st.days = (st.f)? ["日","月","火","水","木","金","土"] : ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];  // 曜日の配列。
             st.left_arrow = (st.f)? "翌月へ" : "Newer";
-            st.updated = (st.f)? "更新" : "updated";
-            st.published = (st.f)? "公開" : "published";
-            st.tooltip = (st.f)? "公開日と更新日を切り替える" : "Switching between published and updated";
             st.right_arrow = (st.f)? "前月へ" : "Older";
+            st.published = (st.f)? "公開" : "published";
+            st.updated = (st.f)? "更新" : "updated";
+            st.tooltip = (st.f)? "公開日と更新日を切り替える" : "Switching between published and updated";
         }
     };  // end of st
     var cal = {  // カレンダーを作成するオブジェクト。
