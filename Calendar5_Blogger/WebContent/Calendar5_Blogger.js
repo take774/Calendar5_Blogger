@@ -70,8 +70,8 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             st.days = (st.f)? ["日","月","火","水","木","金","土"] : ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];  // 曜日の配列。
             st.left_arrow = (st.f)? "翌月へ" : "Newer";
             st.right_arrow = (st.f)? "前月へ" : "Older";
-            st.published = (st.f)? "公開" : "published";
-            st.updated = (st.f)? "更新" : "updated";
+            st.posted = (st.f)? "公開" : "Posted";
+            st.updated = (st.f)? "更新" : "Updated";
             st.tooltip = (st.f)? "公開日と更新日を切り替える" : "Switching between published and updated";
         }
     };  // end of st
@@ -255,10 +255,10 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         },
         createPostList: function(postNo) {  // 投稿リストのタイトルを作成。2番目の引数はハイライトする投稿の要素番号。
             var d = parseInt(eh.node.textContent, 10);  // 日付を取得。
+            var order = (g.order == "published")? st.posted : st.updated;
             if (!st.f) {  // 投稿リストのタイトルを設定。
-                pt.elem.textContent = g.order + ": " + st.enM[g.m - 1] + " " + d + ", " + g.y;
+                pt.elem.textContent = order + ": " + st.enM[g.m - 1] + " " + d + ", " + g.y;
             } else {
-                var order = (g.order == "published")? st.published : st.updated;
                 pt.elem.textContent = g.y + "/" + g.m + "/" + d + "(" + st.days[eh.node.getAttribute("data-remainder")] + ") " + order;
             }
             g.dic[d].forEach(function(e, i) {  // 選択している日付の投稿リストを作成。
