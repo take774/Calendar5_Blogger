@@ -161,11 +161,11 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 }
                 cal._getHolidayC(d, i);  // 祝日に色をつける。
             }
-           if (day + g.em > 35) {  // 最終行の表示。
-               for (var i = 45; i < 52; i++) {
+            if (day + g.em > 35) {  // 最終行の表示。
+                for (var i = 45; i < 52; i++) {
                     m.childNodes[i].style.display = null;
-               }
-           }
+                }
+            }
            return m;
         },
         _getHolidayC: function(node, i) {  // 祝日に色をつける。JSON文字列はhttps://p--q.blogspot.jp/2016/12/blogger10json.htmlを作成。
