@@ -4,13 +4,13 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         defaults: {},  // デフォルト値を入れるオブジェクト。
         callback: {  // コールバック関数。
             getArticles: function(json) {  // 指定した月のフィードを受け取る。
-                Array.prototype.push.apply(g.posts, json.feed.entry);// 投稿のフィードデータを配列に追加。
+                Array.prototype.push.apply(g.posts, json.feed.entry);  // 投稿のフィードデータを配列に追加。
                 if (json.feed.openSearch$totalResults.$t < g.max) {  // 取得投稿数がg.maxより小さい時はすべて取得できたと考える。
                     var re = /\d\d(?=T\d\d:\d\d:\d\d\.\d\d\d.\d\d:\d\d)/i;  // フィードの日時データから日を取得するための正規表現パターン。
                     g.posts.forEach(function(e){  // 投稿のフィードデータについて
                         var d = Number(re.exec(e[g.order].$t));  // 投稿の日を取得。
                         g.dic[d] = g.dic[d] || [];  // 辞書の値の配列を初期化する。
-                        var url = (e.media$thumbnail)? e.media$thumbnail.url : null;  // サムネイルのURL。
+                        var url = (e.media$thumbnail) ? e.media$thumbnail.url : null;  // サムネイルのURL。
                         g.dic[d].push([e.link[4].href, e.link[4].title, url]);  // 辞書の値の配列に[投稿のURL, 投稿タイトル, サムネイルのURL]の配列を入れて2次元配列にする。
                     });
                     var m = cal.createCalendar();  // フィードデータからカレンダーを作成する。
@@ -67,12 +67,12 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         enM: ["Jan.","Feb.","Mar.","Apr.","May.","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec."],
         init: function() {
             st.f = /.jp$/i.test(location.hostname);  // jpドメインのときtrueそうでなければfalse。
-            st.days = (st.f)? ["日","月","火","水","木","金","土"] : ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];  // 曜日の配列。
-            st.left_arrow = (st.f)? "翌月へ" : "Newer";
-            st.right_arrow = (st.f)? "前月へ" : "Older";
-            st.posted = (st.f)? "公開" : "Posted";
-            st.updated = (st.f)? "更新" : "Updated";
-            st.tooltip = (st.f)? "公開日と更新日を切り替える" : "Switching between published and updated";
+            st.days = (st.f) ? ["日","月","火","水","木","金","土"] : ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];  // 曜日の配列。
+            st.left_arrow = (st.f) ? "翌月へ" : "Newer";
+            st.right_arrow = (st.f) ? "前月へ" : "Older";
+            st.posted = (st.f) ? "公開" : "Posted";
+            st.updated = (st.f) ? "更新" : "Updated";
+            st.tooltip = (st.f) ? "公開日と更新日を切り替える" : "Switching between published and updated";
         }
     };  // end of st
     var cal = {  // カレンダーを作成するオブジェクト。
@@ -98,9 +98,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 var node = d.cloneNode(true);
                 node.appendChild(nd.createTxt(st.days[i]));
                 cal._getDayC(node, i);  // 曜日の色をつける。
-                if (!st.f) {
-                    node.style.fontSize = "80%";  // 英語表記では1行に収まらないのでフォントサイズを縮小。
-                }
+                if (!st.f) node.style.fontSize = "80%";  // 英語表記では1行に収まらないのでフォントサイズを縮小。
                 m.appendChild(node);  // カレンダーのflexコンテナに追加。
             });
             d.className = "nopost";
@@ -130,8 +128,8 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 m.childNodes[0].title = st.left_arrow;
                 m.childNodes[0].id = "left_calendar";
             }
-            var titleText = (st.f)? g.y + "年" + g.m + "月" : st.enM[g.m - 1] + " " + g.y;
-            titleText += (g.order == "published")? "" : " " + st.updated;
+            var titleText = (st.f) ? g.y + "年" + g.m + "月" : st.enM[g.m - 1] + " " + g.y;
+            titleText += (g.order == "published") ? "" : " " + st.updated;
             m.childNodes[1].appendChild(nd.createTxt(titleText));
             m.childNodes[1].title = st.tooltip;
             m.childNodes[1].id = "title_calendar";
@@ -153,7 +151,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 if (i in g.dic) {  // 辞書のキーに日があるとき
                     pt.dic[i] = d;  // アイテムページで投稿リストを展開するための辞書。keyが日付、値はカレンダーのノード。
                     g.dic[i].forEach(function(arr) {  // title属性に投稿タイトルのみ入れる。
-                        t += (t)? "\n" + "\u30fb" + arr[1] : "\u30fb" + arr[1];
+                        t += (t) ? "\n" + "\u30fb" + arr[1] : "\u30fb" + arr[1];
                     });
                     d.title = t;
                     d.className = "post";
@@ -255,12 +253,8 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         },
         createPostList: function(postNo) {  // 投稿リストのタイトルを作成。2番目の引数はハイライトする投稿の要素番号。
             var d = parseInt(eh.node.textContent, 10);  // 日付を取得。
-            var order = (g.order == "published")? st.posted : st.updated;
-            if (!st.f) {  // 投稿リストのタイトルを設定。
-                pt.elem.textContent = order + ": " + st.enM[g.m - 1] + " " + d + ", " + g.y;
-            } else {
-                pt.elem.textContent = g.y + "/" + g.m + "/" + d + "(" + st.days[eh.node.getAttribute("data-remainder")] + ") " + order;
-            }
+            var order = (g.order == "published") ? st.posted : st.updated;
+            pt.elem.textContent = (!st.f) ? order + ": " + st.enM[g.m - 1] + " " + d + ", " + g.y;: g.y + "/" + g.m + "/" + d + "(" + st.days[eh.node.getAttribute("data-remainder")] + ") " + order;  // 投稿リストのタイトルを設定。
             g.dic[d].forEach(function(e, i) {  // 選択している日付の投稿リストを作成。
                 pt.elem.appendChild(pt._postNode(e));
                 if (i == postNo) {  // ハイライトする投稿のとき
@@ -328,7 +322,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                     switch (target.id) {
                         case "title_calendar":  // 公開日と更新日を切り替える。
                             target.style.pointerEvents = "none";  // 連続クリックできないようにする。
-                            g.order = (g.order == "published")? "updated" : "published";
+                            g.order = (g.order == "published") ? "updated" : "published";
                             fd.getFeed(dt);
                             break;
                         case "left_calendar":
@@ -357,7 +351,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 if (mc) {  // 取得できた時。
                     var alpha = Number(mc[0]);  // 透明度を取得。
                     var alpha2 = alpha + 0.3;  // 透明度を加える。
-                    alpha2 = (alpha2 > 1)? 1 : alpha2;  // 透明度が1より大きければ1にする。
+                    alpha2 = (alpha2 > 1) ? 1 : alpha2;  // 透明度が1より大きければ1にする。
                     target.style.backgroundColor = eh._rgbaC.replace(alpha, alpha2); // 透明度を変更する。
                 }
             } else {
