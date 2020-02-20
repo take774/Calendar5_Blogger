@@ -40,12 +40,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 pt.init();  // 投稿リストのノードの不変部分を作成しておく。
                 var dt; // 日付オブジェクト。
                 g.mc = /\/(20\d\d)\/([01]\d)\//.exec(document.URL);  // URLから年と月を正規表現で得る。g[1]が年、g.mc[2]が月。
-                if (g.mc) {  // URLから年と月を取得できた時。つまりアイテムページの時。
-                    var m = Number(g.mc[2]) - 1;  // 月ひく1を取得
-                    dt = new Date(g.mc[1], m, 1);  // 投稿月の日付オブジェクトを取得。
-                } else {  // アイテムページ以外の時は今日の日付を取得。
-                    dt = new Date();
-                };
+                dt = (g.mc) ? new Date(g.mc[1], Number(g.mc[2]) - 1, 1) : new Date();  // URLから年と月を取得できた時。
                 fd.getFeed(dt);
             }
         }
@@ -291,7 +286,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
     var eh = {  // イベントハンドラオブジェクト。
         node: null,  // 投稿一覧を表示している日付のノード。
         _timer: null,  // ノードのハイライトを消すタイマーID。
-        _rgbaC: null, // 背景色。styleオブジェクトで取得すると参照渡しになってしまう。
+        _rgbaC: null,  // 背景色。styleオブジェクトで取得すると参照渡しになってしまう。
         _fontC: null,  // 文字色。
         mouseDown: function(e) {  // 要素をクリックしたときのイベントを受け取る関数。
             var target = e.target;  // イベントを発生したオブジェクト。
@@ -302,17 +297,13 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                         eh.node.style.textDecoration = null;  // 文字の下線を消す。
                     }
                     eh.node = target;  // 投稿を表示させるノードを取得。
-                    if (g.mc) {  // アイテムページの時
-                        pt.getHighlightPostNo();  // ハイライト付きで投稿リストを展開する。
-                    } else {  // アイテムページ以外の時
-                        pt.createPostList(null);  // ハイライトする投稿番号はnullを渡す。
-                    }
+                    (g.mc) ? pt.getHighlightPostNo() : pt.createPostList(null);  // アイテムページの時
                     break;
                 case "nopost":  // 投稿がない日のとき
                     pt.elem.textContent = null;  // 表示を消す。
                     if (eh.node) {  // 投稿一覧を表示させているノードがあるとき。
                         eh.node.style.textDecoration = null;  // 文字の下線を消す。
-                        eh.node.style.backgroundColor = eh._rgbaC; // そのノードの背景色を元に戻す。
+                        eh.node.style.backgroundColor = eh._rgbaC;  // そのノードの背景色を元に戻す。
                         eh.node = null;  // 取得しているノードを消去。
                         target.style.pointerEvents = null;  // クリックを有効にする。
                     }
@@ -349,10 +340,9 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 eh._rgbaC = window.getComputedStyle(e.target, '').backgroundColor;  // 背景色のRGBAを取得。
                 var mc = /\d+\.\d+/.exec(eh._rgbaC);  // 透明度を正規表現で取得。
                 if (mc) {  // 取得できた時。
-                    var alpha = Number(mc[0]);  // 透明度を取得。
-                    var alpha2 = alpha + 0.3;  // 透明度を加える。
-                    alpha2 = (alpha2 > 1) ? 1 : alpha2;  // 透明度が1より大きければ1にする。
-                    target.style.backgroundColor = eh._rgbaC.replace(alpha, alpha2); // 透明度を変更する。
+                    var alpha = Number(mc[0]) + 0.3;  // 透明度を取得。
+                    alpha = (alpha > 1) ? 1 : alpha;  // 透明度が1より大きければ1にする。
+                    target.style.backgroundColor = eh._rgbaC.replace(Number(mc[0]), alpha);  // 透明度を変更する。
                 }
             } else {
                 switch (target.id) {
