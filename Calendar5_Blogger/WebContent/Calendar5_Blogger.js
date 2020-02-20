@@ -78,20 +78,20 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             cal._nodes = cal._createNodes();
         },
         _createNodes: function() {  // カレンダーのノードの不変部分を作成しておく。
-            var m = nd.createElem("div");
+            var m = document.createElement("div");
             m.setAttribute("style", "display:flex;flex-wrap:wrap;");
-            var a = nd.createElem("div");
+            var a = document.createElement("div");
             a.setAttribute("style", "flex:0 0 14%;text-align:center;");
             m.appendChild(a);
-            var t = nd.createElem("div");
+            var t = document.createElement("div");
             t.setAttribute("style", "flex:1 0 72%;text-align:center;cursor:pointer;");
             m.appendChild(t);
             m.appendChild(a.cloneNode(true));
-            var d = nd.createElem("div");
+            var d = document.createElement("div");
             d.setAttribute("style", "flex:1 0 14%;text-align:center;");
             st.days.forEach(function(e, i) {  // 1行目に曜日を表示させる。2番目の引数は配列のインデックス。
                 var node = d.cloneNode(true);
-                node.appendChild(nd.createTxt(st.days[i]));
+                node.appendChild(document.createTextNode(st.days[i]));
                 cal._getDayC(node, i);  // 曜日の色をつける。
                 if (!st.f) node.style.fontSize = "80%";  // 英語表記では1行に収まらないのでフォントサイズを縮小。
                 m.appendChild(node);  // カレンダーのflexコンテナに追加。
@@ -118,20 +118,20 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             var caldt = new Date(g.y, g.m - 1, 1);
             var caldate = caldt.getTime();  // カレンダーの1日のミリ秒を取得。
             if (now > caldate) {  // 表示カレンダーの月が現在より過去のときのみ左矢印を表示させる。
-                m.childNodes[0].appendChild(nd.createTxt('\u00ab'));
+                m.childNodes[0].appendChild(document.createTextNode('\u00ab'));
                 m.childNodes[0].style.cursor = "pointer";  // マウスポインタの形状を変化させる。
                 m.childNodes[0].title = st.left_arrow;
                 m.childNodes[0].id = "left_calendar";
             }
             var titleText = (st.f) ? g.y + "年" + g.m + "月" : st.enM[g.m - 1] + " " + g.y;
             titleText += (g.order == "published") ? "" : " " + st.updated;
-            m.childNodes[1].appendChild(nd.createTxt(titleText));
+            m.childNodes[1].appendChild(document.createTextNode(titleText));
             m.childNodes[1].title = st.tooltip;
             m.childNodes[1].id = "title_calendar";
             dt = new Date(cl.defaults.StartYear, cl.defaults.StartMonth - 1, 1);  // 最初の投稿月の日付オブジェクトを取得。
             var firstpost = new Date(dt.getFullYear(), dt.getMonth(), 1).getTime();  // 1日のミリ秒を取得。
             if (firstpost < caldate) {  // 表示カレンダーの月が初投稿月より未来のときのみ右矢印を表示させる。
-                m.childNodes[2].appendChild(nd.createTxt('\u00bb'));
+                m.childNodes[2].appendChild(document.createTextNode('\u00bb'));
                 m.childNodes[2].style.cursor = "pointer";  // マウスポインタの形状を変化させる。
                 m.childNodes[2].title = st.right_arrow;
                 m.childNodes[2].id = "right_calendar";
@@ -141,7 +141,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             pt.dic = {};  // 日付、とカレンダーノードの辞書をリセットする。
             for (var i = 1; i < 1+g.em; i++) { // 1日から末日まで。
                 var d = m.childNodes[c + i];
-                d.appendChild(nd.createTxt(i));
+                d.appendChild(document.createTextNode(i));
                 var t = "";  // nullはundefinedと表示されるのでだめ。
                 if (i in g.dic) {  // 辞書のキーに日があるとき
                     pt.dic[i] = d;  // アイテムページで投稿リストを展開するための辞書。keyが日付、値はカレンダーのノード。
@@ -178,7 +178,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
     };  // end of cal
     var fd = {
         _writeScript: function(url) {  // スクリプト注入。
-            var ws = nd.createElem('script');
+            var ws = document.createElement('script');
             ws.type = 'text/javascript';
             ws.src = url;
             document.getElementsByTagName('head')[0].appendChild(ws);
@@ -200,14 +200,6 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             return thisUrl.replace(/\?m=[01][&\?]/,"?").replace(/[&\?]m=[01]/,"");  // ウェブバージョンとモバイルサイトのパラメータを削除。
         }
     };  // end of fd
-    var nd = {  // ノード関連。
-        createElem: function(tag) {  // tagの要素を作成して返す関数。
-            return document.createElement(tag);
-        },
-        createTxt: function(txt) {  // テキストノードを返す関数。
-            return document.createTextNode(txt);
-        },
-    };  // end of nd
     var pt = {  // その日の投稿リストを表示
         dic: {},  // keyが日付、値がカレンダーのノードの辞書。
         elem: null,  // 投稿リストを表示させるノード。
@@ -215,22 +207,22 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         _reF: /\w+\.html/,  // htmlファイル名を抽出する正規表現パターン。
         init: function() {
             pt._nodes = pt._createNodes();  // 投稿リストのノードの不変部分の取得。
-            pt.elem = nd.createElem("div");  // 投稿リストの年月日を表示する要素の作成。
+            pt.elem = document.createElement("div");  // 投稿リストの年月日を表示する要素の作成。
             pt.elem.setAttribute("style", "display:flex;flex-direction:column;padding-top:5px;text-align:center;");
             var thisUrl = fd.removeParam(document.URL);  // URLからパラメータを除去する。
             pt._html = pt._reF.exec(thisUrl);  // URLからhtmlファイル名を取得。
         },
         _createNodes: function() {  // 投稿リストのノードの不変部分を作成しておく。
-            var p = nd.createElem("div");
+            var p = document.createElement("div");
             p.setAttribute("style", "border-top:dashed 1px rgba(128,128,128,.5);padding-top:5px;");
-            p.appendChild(nd.createElem("div"));
+            p.appendChild(document.createElement("div"));
             p.childNodes[0].setAttribute("style", "float:left;padding:0 5px 5px 0;");
-            p.childNodes[0].appendChild(nd.createElem("a"));
+            p.childNodes[0].appendChild(document.createElement("a"));
             p.childNodes[0].childNodes[0].target = "_blank";
-            p.childNodes[0].childNodes[0].appendChild(nd.createElem("img"));
-            p.appendChild(nd.createElem("div"));
+            p.childNodes[0].childNodes[0].appendChild(document.createElement("img"));
+            p.appendChild(document.createElement("div"));
             p.childNodes[1].setAttribute("style", "text-align:left;");
-            p.childNodes[1].appendChild(nd.createElem("a"));
+            p.childNodes[1].appendChild(document.createElement("a"));
             p.childNodes[1].childNodes[0].target = "_blank";
             return p;
         },
@@ -243,7 +235,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 p.childNodes[0].setAttribute("style", "display:none");  // サムネイルがないときはノードを非表示にする。
             }
             p.childNodes[1].childNodes[0].href = arr[0];  // 投稿のURLを取得。
-            p.childNodes[1].childNodes[0].appendChild(nd.createTxt(arr[1]));  // 投稿タイトルを取得。
+            p.childNodes[1].childNodes[0].appendChild(document.createTextNode(arr[1]));  // 投稿タイトルを取得。
             return p;
         },
         createPostList: function(postNo) {  // 投稿リストのタイトルを作成。2番目の引数はハイライトする投稿の要素番号。
