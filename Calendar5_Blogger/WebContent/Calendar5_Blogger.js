@@ -25,10 +25,8 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                     const m = /(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d)\.\d\d\d(.\d\d:\d\d)/i.exec(json.feed.entry[json.feed.entry.length - 1][g.order].$t);  // フィードの最終投稿（最古）データの日時を取得。
                     const dt = new Date(m[1] + m[2]);  // フィードの最終投稿（最古）データの日時の日付オブジェクトを取得。
                     dt.setSeconds(dt.getSeconds() - 1);  // 最古の投稿の日時より1秒古い日時を取得。
-                    if (g.m == dt.getMonth()+1) {  // 1秒古くても同じ月ならば
-                        const max = g.y + "-" + fd.fm(g.m) + "-" + fd.fm(dt.getDate()) + "T" + fd.fm(dt.getHours()) + ":" + fd.fm(dt.getMinutes()) + ":" + fd.fm(dt.getSeconds()) + "%2B09:00";  // フィード取得のための最新日時を作成。
-                        fd.createURL(max);  // フィード取得のURLを作成。
-                    }
+                    if (g.m == dt.getMonth() + 1)
+                        fd.createURL(g.y + "-" + fd.fm(g.m) + "-" + fd.fm(dt.getDate()) + "T" + fd.fm(dt.getHours()) + ":" + fd.fm(dt.getMinutes()) + ":" + fd.fm(dt.getSeconds()) + "%2B09:00");  // フィード取得のURLを作成。
                 }
             },
         },
@@ -108,7 +106,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         },
         _createDateNodes: function(d) {
             const node = d.cloneNode(true);
-            cal._getDayC(node, i%7);  // 曜日の色をつける。
+            cal._getDayC(node, i % 7);  // 曜日の色をつける。
             return node;
         },
         createCalendar: function() {  // カレンダーのHTML要素を作成。
@@ -139,7 +137,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             const day =  caldt.getDay();  // 1日の曜日を取得。日曜日は0、土曜日は6になる。
             const c = 9 + day;  // 1日の要素番号-1。
             pt.dic = {};  // 日付、とカレンダーノードの辞書をリセットする。
-            for (let i = 1; i < 1+g.em; i++) { // 1日から末日まで。
+            for (let i = 1; i <= g.em; i++) { // 1日から末日まで。
                 const d = m.childNodes[c + i];
                 d.appendChild(document.createTextNode(i));
                 let t = "";  // nullはundefinedと表示されるのでだめ。
@@ -193,11 +191,10 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         },
         getFeed: function(dt) {  // 日付オブジェクトからフィードを得てカレンダーを作成する。
             g.init_d(dt);  // 日付オブジェクトからカレンダーのデータを作成。
-            const max = g.y + "-" + fd.fm(g.m) + "-" + fd.fm(g.em) + "T23:59:59%2B09:00";  // 表示カレンダーの最終日23時59分59秒までのフィードを得るための日時を作成。
-            fd.createURL(max);  // フィードを取得するためのURLを作成。
+            fd.createURL(g.y + "-" + fd.fm(g.m) + "-" + fd.fm(g.em) + "T23:59:59%2B09:00");  // フィードを取得するためのURLを作成。
         },
         removeParam: function(thisUrl) {
-            return thisUrl.replace(/\?m=[01][&\?]/,"?").replace(/[&\?]m=[01]/,"");  // ウェブバージョンとモバイルサイトのパラメータを削除。
+            return thisUrl.replace(/\?m=[01][&\?]/, "?").replace(/[&\?]m=[01]/, "");  // ウェブバージョンとモバイルサイトのパラメータを削除。
         }
     };  // end of fd
     const pt = {  // その日の投稿リストを表示
@@ -301,7 +298,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                     }
                     break;
                 default:
-                    const dt = new Date(g.y, g.m-1, 1);  // 表示しているカレンダーの1日の日付オブジェクトを取得。
+                    const dt = new Date(g.y, g.m - 1, 1);  // 表示しているカレンダーの1日の日付オブジェクトを取得。
                     switch (target.id) {
                         case "title_calendar":  // 公開日と更新日を切り替える。
                             target.style.pointerEvents = "none";  // 連続クリックできないようにする。
