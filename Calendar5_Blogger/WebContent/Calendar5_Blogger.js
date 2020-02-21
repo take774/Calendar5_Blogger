@@ -238,7 +238,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         createPostList: function(postNo) {  // 投稿リストのタイトルを作成。2番目の引数はハイライトする投稿の要素番号。
             const d = parseInt(eh.node.textContent, 10);  // 日付を取得。
             const order = (g.order == "published") ? st.posted : st.updated;
-            pt.elem.textContent = (!st.f) ? order + ": " + st.enM[g.m - 1] + " " + d + ", " + g.y;: g.y + "/" + g.m + "/" + d + "(" + st.days[eh.node.getAttribute("data-remainder")] + ") " + order;  // 投稿リストのタイトルを設定。
+            pt.elem.textContent = (!st.f) ? order + ": " + st.enM[g.m - 1] + " " + d + ", " + g.y : g.y + "/" + g.m + "/" + d + "(" + st.days[eh.node.getAttribute("data-remainder")] + ") " + order;  // 投稿リストのタイトルを設定。
             g.dic[d].forEach(function(e, i) {  // 選択している日付の投稿リストを作成。
                 pt.elem.appendChild(pt._postNode(e));
                 if (i == postNo) {  // ハイライトする投稿のとき
