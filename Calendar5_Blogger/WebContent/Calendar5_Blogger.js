@@ -332,7 +332,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 eh._rgbaC = window.getComputedStyle(e.target, '').backgroundColor;  // 背景色のRGBAを取得。
                 const mc = /\d+\.\d+/.exec(eh._rgbaC);  // 透明度を正規表現で取得。
                 if (mc) {  // 取得できた時。
-                    const alpha = Number(mc[0]) + 0.3;  // 透明度を取得。
+                    let alpha = Number(mc[0]) + 0.3;  // 透明度を取得。
                     alpha = (alpha > 1) ? 1 : alpha;  // 透明度が1より大きければ1にする。
                     target.style.backgroundColor = eh._rgbaC.replace(Number(mc[0]), alpha);  // 透明度を変更する。
                 }
