@@ -144,7 +144,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 if (i in g.dic) {  // 辞書のキーに日があるとき
                     pt.dic[i] = d;  // アイテムページで投稿リストを展開するための辞書。keyが日付、値はカレンダーのノード。
                     g.dic[i].forEach(function(arr) {  // title属性に投稿タイトルのみ入れる。
-                        t += (t) ? "\n" + "\u30fb" + arr[1] : "\u30fb" + arr[1];
+                        t += t ? "\n" + "\u30fb" + arr[1] : "\u30fb" + arr[1];
                     });
                     d.title = t;
                     d.className = "post";
@@ -206,8 +206,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             pt._nodes = pt._createNodes();  // 投稿リストのノードの不変部分の取得。
             pt.elem = document.createElement("div");  // 投稿リストの年月日を表示する要素の作成。
             pt.elem.setAttribute("style", "display:flex;flex-direction:column;padding-top:5px;text-align:center;");
-            const thisUrl = fd.removeParam(document.URL);  // URLからパラメータを除去する。
-            pt._html = pt._reF.exec(thisUrl);  // URLからhtmlファイル名を取得。
+            pt._html = pt._reF.exec(fd.removeParam(document.URL));  // URLからhtmlファイル名を取得。
         },
         _createNodes: function() {  // 投稿リストのノードの不変部分を作成しておく。
             const p = document.createElement("div");
