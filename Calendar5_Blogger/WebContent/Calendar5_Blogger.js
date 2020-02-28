@@ -26,7 +26,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                     const m = /(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d)\.\d\d\d(.\d\d:\d\d)/i.exec(json.feed.entry[json.feed.entry.length - 1][g.order].$t);  // フィードの最終投稿（最古）データの日時を取得。
                     const dt = new Date(m[1] + m[2]);  // フィードの最終投稿（最古）データの日時の日付オブジェクトを取得。
                     dt.setSeconds(dt.getSeconds() - 1);  // 最古の投稿の日時より1秒古い日時を取得。
-                    if (g.m == dt.getMonth() + 1)
+                    if (g.m === dt.getMonth() + 1)
                         fd.createURL(g.y + "-" + fd.fm(g.m) + "-" + fd.fm(dt.getDate()) + "T" + fd.fm(dt.getHours()) + ":" + fd.fm(dt.getMinutes()) + ":" + fd.fm(dt.getSeconds()) + "%2B09:00");  // フィード取得のURLを作成。
                 }
             },
@@ -124,7 +124,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 m.childNodes[0].id = "left_calendar";
             }
             let titleText = (st.f) ? g.y + "年" + g.m + "月" : st.enM[g.m - 1] + " " + g.y;
-            titleText += (g.order == "published") ? "" : " " + st.updated;
+            titleText += (g.order === "published") ? "" : " " + st.updated;
             m.childNodes[1].appendChild(document.createTextNode(titleText));
             m.childNodes[1].title = st.tooltip;
             m.childNodes[1].id = "title_calendar";
@@ -170,9 +170,9 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         },
         _getDayC: function(node, r){  // 曜日の色をつける。オブジェクトの参照渡しを利用。
             node.setAttribute("data-remainder", r);  // ノードに曜日番号を付ける。data-から始まるプロパティにしないとNode.cloneNode(true)で消えてしまう。
-            if (r == 0) {  // 日曜日のとき
+            if (r === 0) {  // 日曜日のとき
                 node.style.color = cal._holidayC;
-            } else if (r == 6) {  // 土曜日のとき
+            } else if (r === 6) {  // 土曜日のとき
                 node.style.color = cal._SatC;
             }
         }
@@ -239,11 +239,11 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         },
         createPostList: function(postNo) {  // 投稿リストのタイトルを作成。2番目の引数はハイライトする投稿の要素番号。
             const d = parseInt(eh.node.textContent, 10);  // 日付を取得。
-            const order = (g.order == "published") ? st.posted : st.updated;
+            const order = (g.order === "published") ? st.posted : st.updated;
             pt.elem.textContent = (!st.f) ? order + ": " + st.enM[g.m - 1] + " " + d + ", " + g.y : g.y + "/" + g.m + "/" + d + "(" + st.days[eh.node.getAttribute("data-remainder")] + ") " + order;  // 投稿リストのタイトルを設定。
             g.dic[d].forEach(function(e, i) {  // 選択している日付の投稿リストを作成。
                 pt.elem.appendChild(pt._postNode(e));
-                if (i == postNo) {  // ハイライトする投稿のとき
+                if (i === postNo) {  // ハイライトする投稿のとき
                     const p = pt.elem.lastChild;  // ハイライトする投稿のリストのノードを取得。
                     p.setAttribute("style", p.style.cssText + "background-color:#eee;border:solid 1px #dddddd;border-radius:5px;pointer-events:none;");  // アンカータグのリンクも無効にする。
                 }
@@ -255,7 +255,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 const d = days[i];  // 日付を取得。
                 const posts = g.dic[d]; // 各日付の投稿の配列を取得。
                 for (let j = 0; j < posts.length; j++) {  // 各投稿について
-                    if (pt._html[0] == pt._reF.exec(posts[j])[0]) {  // 投稿のhtmlファイル名が一致するとき。フィードは.comで返ってきてTDLが異なるのでURL直接は比較できない。
+                    if (pt._html[0] === pt._reF.exec(posts[j])[0]) {  // 投稿のhtmlファイル名が一致するとき。フィードは.comで返ってきてTDLが異なるのでURL直接は比較できない。
                         eh.node =  pt.dic[d];  // カレンダーの日付のノードを取得。
                         pt.createPostList(j);  // 投稿リストの作成。ハイライトする投稿の要素番号も渡す。
                         return;  // for文を抜ける。
@@ -266,7 +266,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         getHighlightPostNo: function() {  // アイテムページのURLからhtmlファイル名を比較してハイライトする投稿番号を取得。
             const arr = g.dic[eh.node.textContent];  // その日付の投稿リストを取得。
             for (let i = 0; i < arr.length; i++) {
-                if (pt._html[0] == pt._reF.exec(arr[i])[0]) {  // 投稿のhtmlファイル名が一致するとき。フィードは.comで返ってきてTDLが異なるのでURL直接は比較できない。
+                if (pt._html[0] === pt._reF.exec(arr[i])[0]) {  // 投稿のhtmlファイル名が一致するとき。フィードは.comで返ってきてTDLが異なるのでURL直接は比較できない。
                     pt.createPostList(i);  // 投稿リストの作成。ハイライトする投稿の要素番号も渡す。
                     return;
                 }
@@ -304,7 +304,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                     switch (target.id) {
                         case "title_calendar":  // 公開日と更新日を切り替える。
                             target.style.pointerEvents = "none";  // 連続クリックできないようにする。
-                            g.order = (g.order == "published") ? "updated" : "published";
+                            g.order = (g.order === "published") ? "updated" : "published";
                             fd.getFeed(dt);
                             break;
                         case "left_calendar":
@@ -324,7 +324,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         },
         mouseOver: function(e) {
             const target = e.target;  // イベントを発生したオブジェクト。
-            if (target.className == "post") {  // 投稿がある日のとき
+            if (target.className === "post") {  // 投稿がある日のとき
                 target.style.textDecoration = "underline";  // 文字に下線をつける。
                 eh._fontC = window.getComputedStyle(e.target, '').color;  // 文字色を取得。
                 target.style.color = "#33aaff";  // 文字色を変える。
@@ -349,7 +349,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         },
         mouseOut: function(e) {
             const target = e.target;  // イベントを発生したオブジェクト。
-            if (target.className == "post") {  // 投稿がある日のとき
+            if (target.className === "post") {  // 投稿がある日のとき
                 target.style.color = eh._fontC;  // 変更前の文字色に戻す。
                 if (target !== eh.node) {  // そのノードの投稿一覧を表示させていないとき。
                     target.style.textDecoration = null;  // 文字の下線を消す。
