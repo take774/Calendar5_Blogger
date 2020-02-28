@@ -20,7 +20,8 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                     g.elem.textContent = null;  // 追加する対象の要素の子ノードを消去する。
                     g.elem.appendChild(m);  // 追加する対象の要素の子ノードにカレンダーのflexコンテナを追加。
                     g.elem.appendChild(pt.elem);  // 投稿リストを表示するノードを追加。
-                    if (!eh.node && g.mc) pt.getPostDate(); // eh.nodeがnull(つまりページのロード時のみ)かつアイテムページの時のみアイテムページの投稿リストを展開する。
+                    if (!eh.node && g.mc)
+                        pt.getPostDate(); // eh.nodeがnull(つまりページのロード時のみ)かつアイテムページの時のみアイテムページの投稿リストを展開する。
                 } else {  // 未取得のフィードを再取得する。最新の投稿が先頭に来る。
                     const m = /(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d)\.\d\d\d(.\d\d:\d\d)/i.exec(json.feed.entry[json.feed.entry.length - 1][g.order].$t);  // フィードの最終投稿（最古）データの日時を取得。
                     const dt = new Date(m[1] + m[2]);  // フィードの最終投稿（最古）データの日時の日付オブジェクトを取得。
@@ -91,7 +92,8 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 const node = d.cloneNode(true);
                 node.appendChild(document.createTextNode(st.days[i]));
                 cal._getDayC(node, i);  // 曜日の色をつける。
-                if (!st.f) node.style.fontSize = "80%";  // 英語表記では1行に収まらないのでフォントサイズを縮小。
+                if (!st.f)
+                    node.style.fontSize = "80%";  // 英語表記では1行に収まらないのでフォントサイズを縮小。
                 m.appendChild(node);  // カレンダーのflexコンテナに追加。
             });
             d.className = "nopost";
@@ -163,7 +165,8 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             // キーは年、値は2次元配列。1次が月数、2次が祝日の配列。
             const holidays = cl.defaults.Holidays;
             const arr = holidays[g.y][g.m - 1];  // 祝日の配列を取得。
-            if (arr.indexOf(i) != -1) node.style.color = cal._holidayC;  // 祝日配列に日付があるとき。in演算子はインデックスの有無の確認をするだけ。
+            if (arr.indexOf(i) != -1)
+                node.style.color = cal._holidayC;  // 祝日配列に日付があるとき。in演算子はインデックスの有無の確認をするだけ。
         },
         _getDayC: function(node, r){  // 曜日の色をつける。オブジェクトの参照渡しを利用。
             node.setAttribute("data-remainder", r);  // ノードに曜日番号を付ける。data-から始まるプロパティにしないとNode.cloneNode(true)で消えてしまう。
