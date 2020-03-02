@@ -10,8 +10,9 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                     g.posts.forEach(function(e){  // 投稿のフィードデータについて
                         const d = Number(re.exec(e[g.order].$t));  // 投稿の日を取得。
                         g.dic[d] = g.dic[d] || [];  // 辞書の値の配列を初期化する。
+                        const txt = e.summary.$t.substr(0, 20) + "...";
                         const url = (e.media$thumbnail) ? e.media$thumbnail.url : null;  // サムネイルのURL。
-                        g.dic[d].push([e.link[4].href, e.link[4].title, url]);  // 辞書の値の配列に[投稿のURL, 投稿タイトル, サムネイルのURL]の配列を入れて2次元配列にする。
+                        g.dic[d].push([e.link[4].href, e.link[4].title, txt, url]);  // 辞書の値の配列に[投稿のURL, 投稿タイトル, 投稿本文, サムネイルのURL]の配列を入れて2次元配列にする。
                     });
                     const m = cal.createCalendar();  // フィードデータからカレンダーを作成する。
                     m.addEventListener('mousedown', eh.mouseDown, false);  // カレンダーのflexコンテナでイベントバブリングを受け取る。マウスが要素をクリックしたとき。
@@ -225,16 +226,18 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             p.childNodes[1].childNodes[0].target = "_blank";
             return p;
         },
-        _postNode: function(arr) {  // 引数は[投稿のURL, 投稿タイトル, サムネイルのURL]の配列。
+        _postNode: function(arr) {  // 引数は[投稿のURL, 投稿タイトル, 投稿本文, サムネイルのURL]の配列。
             const p = pt._nodes.cloneNode(true);
-            if (arr[2]) {  // サムネイルがあるとき
+            const text1 = '<p style="font-size: smaller;">' + arr[2] + '</p>';
+            if (arr[3]) {  // サムネイルがあるとき
                 p.childNodes[0].childNodes[0].href = arr[0];  // 投稿のURLを取得。
-                p.childNodes[0].childNodes[0].childNodes[0].src = arr[2];  // サムネイル画像のURLを取得。
+                p.childNodes[0].childNodes[0].childNodes[0].src = arr[3];  // サムネイル画像のURLを取得。
             } else {
                 p.childNodes[0].setAttribute("style", "display:none");  // サムネイルがないときはノードを非表示にする。
             }
             p.childNodes[1].childNodes[0].href = arr[0];  // 投稿のURLを取得。
             p.childNodes[1].childNodes[0].appendChild(document.createTextNode(arr[1]));  // 投稿タイトルを取得。
+            p.childNodes[1].childNodes[0].insertAdjacentHTML("beforeend", text1);
             return p;
         },
         createPostList: function(postNo) {  // 投稿リストのタイトルを作成。2番目の引数はハイライトする投稿の要素番号。
