@@ -38,7 +38,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 cal.init();  // カレンダーのノードの不変部分を作成しておく。
                 pt.init();  // 投稿リストのノードの不変部分を作成しておく。
                 let dt; // 日付オブジェクト。
-                g.mc = /\/(20\d\d)\/([01]\d)\//.exec(document.URL);  // URLから年と月を正規表現で得る。g[1]が年、g.mc[2]が月。
+                g.mc = /\/(20\d\d)\/([01]\d)\//.exec(document.URL);  // URLから年と月を正規表現で得る。g.mc[1]が年、g.mc[2]が月。
                 dt = (g.mc) ? new Date(g.mc[1], Number(g.mc[2]) - 1, 1) : new Date();  // URLから年と月を取得できた時。
                 fd.getFeed(dt);
             }
