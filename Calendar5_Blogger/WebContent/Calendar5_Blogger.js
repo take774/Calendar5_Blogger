@@ -63,8 +63,8 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         init: function() {
             st.f = /.jp$/i.test(location.hostname);  // jpドメインのときtrueそうでなければfalse。
             st.days = (st.f) ? ["日","月","火","水","木","金","土"] : ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];  // 曜日の配列。
-            st.left_arrow = (st.f) ? "翌月へ" : "Newer";
-            st.right_arrow = (st.f) ? "前月へ" : "Older";
+            st.next_month = (st.f) ? "翌月へ" : "Newer";
+            st.prev_month = (st.f) ? "前月へ" : "Older";
             st.posted = (st.f) ? "公開" : "Posted";
             st.updated = (st.f) ? "更新" : "Updated";
             st.tooltip = (st.f) ? "公開日と更新日を切り替える" : "Switching between published and updated";
@@ -121,8 +121,8 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             if (now > caldate) {  // 表示カレンダーの月が現在より過去のときのみ左矢印を表示させる。
                 m.childNodes[0].appendChild(document.createTextNode('\u00ab'));
                 m.childNodes[0].style.cursor = "pointer";  // マウスポインタの形状を変化させる。
-                m.childNodes[0].title = st.left_arrow;
-                m.childNodes[0].id = "left_calendar";
+                m.childNodes[0].title = st.next_month;
+                m.childNodes[0].id = "next_month";
             }
             let titleText = (st.f) ? g.y + "年" + g.m + "月" : st.enM[g.m - 1] + " " + g.y;
             titleText += (g.order === "published") ? "" : " " + st.updated;
@@ -134,8 +134,8 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             if (firstpost < caldate) {  // 表示カレンダーの月が初投稿月より未来のときのみ右矢印を表示させる。
                 m.childNodes[2].appendChild(document.createTextNode('\u00bb'));
                 m.childNodes[2].style.cursor = "pointer";  // マウスポインタの形状を変化させる。
-                m.childNodes[2].title = st.right_arrow;
-                m.childNodes[2].id = "right_calendar";
+                m.childNodes[2].title = st.prev_month;
+                m.childNodes[2].id = "prev_month";
             }
             const day =  caldt.getDay();  // 1日の曜日を取得。日曜日は0、土曜日は6になる。
             const c = 9 + day;  // 1日の要素番号-1。
@@ -310,13 +310,13 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                             g.order = (g.order === "published") ? "updated" : "published";
                             fd.getFeed(dt);
                             break;
-                        case "left_calendar":
+                        case "next_month":
                             target.style.pointerEvents = "none";  // 連続クリックできないようにする。
                             dt.setMonth(dt.getMonth() + 1);  // 翌月の日付オブジェクトを取得。
                             fd.getFeed(dt);
                             pt.elem.textContent = null;  // 表示を消す。
                             break;
-                        case "right_calendar":
+                        case "prev_month":
                             target.style.pointerEvents = "none";  // 連続クリックできないようにする。
                             dt.setMonth(dt.getMonth() - 1);  // 前月の日付オブジェクトを取得。
                             fd.getFeed(dt);
@@ -341,8 +341,8 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             } else {
                 switch (target.id) {
                     case "title_calendar":
-                    case "left_calendar":
-                    case "right_calendar":
+                    case "next_month":
+                    case "prev_month":
                         target.style.textDecoration = "underline";  // 文字に下線をつける。
                         eh._fontC = window.getComputedStyle(e.target, '').color;  // 文字色を取得。
                         target.style.color = "#33aaff";  // 文字色を変える。
@@ -361,8 +361,8 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             } else {
                 switch (target.id) {
                     case "title_calendar":
-                    case "left_calendar":
-                    case "right_calendar":
+                    case "next_month":
+                    case "prev_month":
                         target.style.textDecoration = null;  // 文字の下線を消す。
                         target.style.color = eh._fontC;  // 変更前の文字色に戻す。
                 }
