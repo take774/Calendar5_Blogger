@@ -72,7 +72,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
     };  // end of st
     const cal = {  // カレンダーを作成するオブジェクト。
         _holidayC: "rgb(255, 0, 0)",  // 休日の文字色
-        _SatC: "rgb(0, 51, 255)",  // 土曜日の文字色
+        _saturdayC: "rgb(0, 51, 255)",  // 土曜日の文字色
         _nodes: null,
         init: function() {  // カレンダーのノードの不変部分の取得。
             cal._nodes = cal._createNodes();
@@ -173,7 +173,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             if (r === 0) {  // 日曜日のとき
                 node.style.color = cal._holidayC;
             } else if (r === 6) {  // 土曜日のとき
-                node.style.color = cal._SatC;
+                node.style.color = cal._saturdayC;
             }
         }
     };  // end of cal
