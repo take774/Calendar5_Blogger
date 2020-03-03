@@ -102,7 +102,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 m.appendChild(cal._createDateNodes(d));  // カレンダーのflexコンテナに追加。
             }
             d.style.display = "none";  // カレンダーの6行目はデフォルトでは表示させない。
-            for (i = 0; i < 7; i++) {
+            for (let i = 0; i < 7; i++) {
                 m.appendChild(cal._createDateNodes(d));  // カレンダーのflexコンテナに追加。
             }
             return m;
