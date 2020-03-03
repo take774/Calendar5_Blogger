@@ -114,7 +114,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         },
         createCalendar: function() {  // カレンダーのHTML要素を作成。
             const m = cal._nodes.cloneNode(true);
-            let dt = new Date();  // 今日の日付オブジェクトを取得。
+            const dt = new Date();  // 今日の日付オブジェクトを取得。
             const now = new Date(dt.getFullYear(), dt.getMonth(), 1).getTime();  // 今月の1日のミリ秒を取得。
             const caldt = new Date(g.y, g.m - 1, 1);
             const caldate = caldt.getTime();  // カレンダーの1日のミリ秒を取得。
@@ -129,8 +129,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             m.childNodes[1].appendChild(document.createTextNode(titleText));
             m.childNodes[1].title = st.tooltip;
             m.childNodes[1].id = "title_calendar";
-            dt = new Date(cl.defaults.StartYear, cl.defaults.StartMonth - 1, 1);  // 最初の投稿月の日付オブジェクトを取得。
-            const firstpost = new Date(dt.getFullYear(), dt.getMonth(), 1).getTime();  // 1日のミリ秒を取得。
+            const firstpost = new Date(cl.defaults.StartYear, cl.defaults.StartMonth - 1, 1).getTime();  // 1日のミリ秒を取得。
             if (firstpost < caldate) {  // 表示カレンダーの月が初投稿月より未来のときのみ右矢印を表示させる。
                 m.childNodes[2].appendChild(document.createTextNode('\u00bb'));
                 m.childNodes[2].style.cursor = "pointer";  // マウスポインタの形状を変化させる。
