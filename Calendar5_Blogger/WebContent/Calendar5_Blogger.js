@@ -164,7 +164,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             // キーは年、値は2次元配列。1次が月数、2次が祝日の配列。
             const holidays = cl.defaults.Holidays;
             const arr = holidays[g.y][g.m - 1];  // 祝日の配列を取得。
-            if (arr.indexOf(i) != -1)
+            if (arr.indexOf(i) !== -1)
                 node.style.color = cal._holidayC;  // 祝日配列に日付があるとき。in演算子はインデックスの有無の確認をするだけ。
         },
         _getDayC: function(node, r){  // 曜日の色をつける。オブジェクトの参照渡しを利用。
