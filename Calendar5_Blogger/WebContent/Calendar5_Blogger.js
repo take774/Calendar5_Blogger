@@ -83,12 +83,14 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             const a = document.createElement("div");
             a.setAttribute("style", "flex:0 0 14%;text-align:center;");
             m.appendChild(a);
+            m.appendChild(a.cloneNode(true));
             const t = document.createElement("div");
-            t.setAttribute("style", "flex:1 0 72%;text-align:center;cursor:pointer;");
+            t.setAttribute("style", "flex:1 0 44%;text-align:center;cursor:pointer;");
             m.appendChild(t);
             m.appendChild(a.cloneNode(true));
+            m.appendChild(a.cloneNode(true));
             const d = document.createElement("div");
-            d.setAttribute("style", "flex:1 0 14%;text-align:center;");
+            d.setAttribute("style", "flex:0 0 14%;text-align:center;");
             st.days.forEach(function(e, i) {  // 1行目に曜日を表示させる。2番目の引数は配列のインデックス。
                 const node = d.cloneNode(true);
                 node.appendChild(document.createTextNode(st.days[i]));
@@ -120,23 +122,30 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             if (now > caldt) {  // 表示カレンダーの月が現在より過去のときのみ左矢印を表示させる。
                 m.childNodes[0].appendChild(document.createTextNode('\u00ab'));
                 m.childNodes[0].style.cursor = "pointer";  // マウスポインタの形状を変化させる。
-                m.childNodes[0].title = st.next_month;
-                m.childNodes[0].id = "next_month";
+                m.childNodes[0].id = "next_year";
+                m.childNodes[1].appendChild(document.createTextNode('\u003c'));
+                m.childNodes[1].style.cursor = "pointer";  // マウスポインタの形状を変化させる。
+                m.childNodes[1].title = st.next_month;
+                m.childNodes[1].id = "next_month";
             }
             let titleText = (st.f) ? g.year + "年" + g.month + "月" : st.enM[g.month - 1] + " " + g.year;
             titleText += (g.order === "published") ? "" : " " + st.updated;
-            m.childNodes[1].appendChild(document.createTextNode(titleText));
-            m.childNodes[1].title = st.tooltip;
-            m.childNodes[1].id = "title_calendar";
+            m.childNodes[2].appendChild(document.createTextNode(titleText));
+            m.childNodes[2].style.cursor = "text";
+            m.childNodes[2].title = st.tooltip;
+            m.childNodes[2].id = "title_calendar";
             const firstpost = new Date(cl.defaults.StartYear, cl.defaults.StartMonth - 1, 1);  // 1日を取得。
             if (firstpost < caldt) {  // 表示カレンダーの月が初投稿月より未来のときのみ右矢印を表示させる。
-                m.childNodes[2].appendChild(document.createTextNode('\u00bb'));
-                m.childNodes[2].style.cursor = "pointer";  // マウスポインタの形状を変化させる。
-                m.childNodes[2].title = st.prev_month;
-                m.childNodes[2].id = "prev_month";
+                m.childNodes[3].appendChild(document.createTextNode('\u003e'));
+                m.childNodes[3].style.cursor = "pointer";  // マウスポインタの形状を変化させる。
+                m.childNodes[3].title = st.prev_month;
+                m.childNodes[3].id = "prev_month";
+                m.childNodes[4].appendChild(document.createTextNode('\u00bb'));
+                m.childNodes[4].style.cursor = "pointer";  // マウスポインタの形状を変化させる。
+                m.childNodes[4].id = "prev_year";
             }
             const day =  caldt.getDay();  // 1日の曜日を取得。日曜日は0、土曜日は6になる。
-            const c = 9 + day;  // 1日の要素番号-1。
+            const c = 11 + day;  // 1日の要素番号-1。
             pt.dic = {};  // 日付、とカレンダーノードの辞書をリセットする。
             for (let i = 1; i <= g.lastday; i++) { // 1日から末日まで。
                 const d = m.childNodes[c + i];
@@ -301,7 +310,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                     }
                     break;
                 default:
-                    const dt = new Date(g.year, g.month - 1, 1);  // 表示しているカレンダーの1日の日付オブジェクトを取得。
+                    let dt = new Date(g.year, g.month - 1, 1);  // 表示しているカレンダーの1日の日付オブジェクトを取得。
                     switch (target.id) {
                         case "title_calendar":  // 公開日と更新日を切り替える。
                             target.style.pointerEvents = "none";  // 連続クリックできないようにする。
@@ -314,9 +323,25 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                             fd.getFeed(dt);
                             pt.elem.textContent = null;  // 表示を消す。
                             break;
+                        case "next_year":
+                            target.style.pointerEvents = "none";  // 連続クリックできないようにする。
+                            const ny = new Date(dt.getFullYear() + 1, dt.getMonth(), 1);
+                            const today = new Date();
+                            dt = (ny < today) ? ny : today;
+                            fd.getFeed(dt);
+                            pt.elem.textContent = null;  // 表示を消す。
+                            break;
                         case "prev_month":
                             target.style.pointerEvents = "none";  // 連続クリックできないようにする。
                             dt.setMonth(dt.getMonth() - 1);  // 前月の日付オブジェクトを取得。
+                            fd.getFeed(dt);
+                            pt.elem.textContent = null;  // 表示を消す。
+                            break;
+                        case "prev_year":
+                            target.style.pointerEvents = "none";  // 連続クリックできないようにする。
+                            const py = new Date(dt.getFullYear() - 1, dt.getMonth(), 1);
+                            const sy = new Date(cl.defaults.StartYear, cl.defaults.StartMonth - 1, 1);
+                            dt = (py > sy) ? py : sy;
                             fd.getFeed(dt);
                             pt.elem.textContent = null;  // 表示を消す。
                             break;
@@ -340,7 +365,9 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 switch (target.id) {
                     case "title_calendar":
                     case "next_month":
+                    case "next_year":
                     case "prev_month":
+                    case "prev_year":
                         target.style.textDecoration = "underline";  // 文字に下線をつける。
                         eh._fontC = window.getComputedStyle(e.target, '').color;  // 文字色を取得。
                         target.style.color = "#33aaff";  // 文字色を変える。
@@ -360,7 +387,9 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 switch (target.id) {
                     case "title_calendar":
                     case "next_month":
+                    case "next_year":
                     case "prev_month":
+                    case "prev_year":
                         target.style.textDecoration = null;  // 文字の下線を消す。
                         target.style.color = eh._fontC;  // 変更前の文字色に戻す。
                 }
