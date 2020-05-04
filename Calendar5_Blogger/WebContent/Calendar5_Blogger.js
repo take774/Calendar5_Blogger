@@ -27,8 +27,8 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                     const m = /(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d)\.\d\d\d(.\d\d:\d\d)/i.exec(json.feed.entry[json.feed.entry.length - 1][g.order].$t);  // フィードの最終投稿（最古）データの日時を取得。
                     const dt = new Date(m[1] + m[2]);  // フィードの最終投稿（最古）データの日時の日付オブジェクトを取得。
                     dt.setSeconds(dt.getSeconds() - 1);  // 最古の投稿の日時より1秒古い日時を取得。
-                    if (g.m === dt.getMonth() + 1)
-                        fd.createURL(g.y + "-" + fd.fm(g.m) + "-" + fd.fm(dt.getDate()) + "T" + fd.fm(dt.getHours()) + ":" + fd.fm(dt.getMinutes()) + ":" + fd.fm(dt.getSeconds()) + "%2B09:00");  // フィード取得のURLを作成。
+                    if (g.month === dt.getMonth() + 1)
+                        fd.createURL(g.year + "-" + fd.fm(g.month) + "-" + fd.fm(dt.getDate()) + "T" + fd.fm(dt.getHours()) + ":" + fd.fm(dt.getMinutes()) + ":" + fd.fm(dt.getSeconds()) + "%2B09:00");  // フィード取得のURLを作成。
                 }
             },
         },
@@ -50,9 +50,9 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         order: "published",  // publishedかupdatedが入る。
         elem: null,  // 置換するdiv要素。
         init_d: function (dt) {  // 日付オブジェクトからカレンダーのデータを作り直す。
-            g.y = dt.getFullYear();  // 表示カレンダーの年を取得。
-            g.m = dt.getMonth() + 1;  // 表示カレンダーの月を取得。
-            g.em = new Date(g.y, g.m, 0).getDate();  // 表示カレンダーの末日を取得。
+            g.year = dt.getFullYear();  // 表示カレンダーの年を取得。
+            g.month = dt.getMonth() + 1;  // 表示カレンダーの月を取得。
+            g.lastday = new Date(g.year, g.month, 0).getDate();  // 表示カレンダーの末日を取得。
             g.posts = [];  // フィードデータをリセットする。投稿のフィードデータを収納する配列。
             g.dic = {};  // 投稿データをリセットする。キーを日、値を投稿のURLと投稿タイトルの配列の配列、とする辞書。
         },
@@ -116,14 +116,14 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             const m = cal._nodes.cloneNode(true);
             const dt = new Date();  // 今日の日付オブジェクトを取得。
             const now = new Date(dt.getFullYear(), dt.getMonth(), 1);  // 今月の1日を取得。
-            const caldt = new Date(g.y, g.m - 1, 1);
+            const caldt = new Date(g.year, g.month - 1, 1);
             if (now > caldt) {  // 表示カレンダーの月が現在より過去のときのみ左矢印を表示させる。
                 m.childNodes[0].appendChild(document.createTextNode('\u00ab'));
                 m.childNodes[0].style.cursor = "pointer";  // マウスポインタの形状を変化させる。
                 m.childNodes[0].title = st.next_month;
                 m.childNodes[0].id = "next_month";
             }
-            let titleText = (st.f) ? g.y + "年" + g.m + "月" : st.enM[g.m - 1] + " " + g.y;
+            let titleText = (st.f) ? g.year + "年" + g.month + "月" : st.enM[g.month - 1] + " " + g.year;
             titleText += (g.order === "published") ? "" : " " + st.updated;
             m.childNodes[1].appendChild(document.createTextNode(titleText));
             m.childNodes[1].title = st.tooltip;
@@ -138,7 +138,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             const day =  caldt.getDay();  // 1日の曜日を取得。日曜日は0、土曜日は6になる。
             const c = 9 + day;  // 1日の要素番号-1。
             pt.dic = {};  // 日付、とカレンダーノードの辞書をリセットする。
-            for (let i = 1; i <= g.em; i++) { // 1日から末日まで。
+            for (let i = 1; i <= g.lastday; i++) { // 1日から末日まで。
                 const d = m.childNodes[c + i];
                 d.appendChild(document.createTextNode(i));
                 let t = "";  // nullはundefinedと表示されるのでだめ。
@@ -153,7 +153,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 }
                 cal._getHolidayC(d, i);  // 祝日に色をつける。
             }
-            if (day + g.em > 35) {  // 最終行の表示。
+            if (day + g.lastday > 35) {  // 最終行の表示。
                 for (let i = 45; i < 52; i++) {
                     m.childNodes[i].style.display = null;
                 }
@@ -163,7 +163,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         _getHolidayC: function(node, i) {  // 祝日に色をつける。JSON文字列はhttps://p--q.blogspot.jp/2016/12/blogger10json.htmlを作成。
             // キーは年、値は2次元配列。1次が月数、2次が祝日の配列。
             const holidays = cl.defaults.Holidays;
-            const arr = holidays[g.y][g.m - 1];  // 祝日の配列を取得。
+            const arr = holidays[g.year][g.month - 1];  // 祝日の配列を取得。
             if (arr.indexOf(i) !== -1)
                 node.style.color = cal._holidayC;  // 祝日配列に日付があるとき。in演算子はインデックスの有無の確認をするだけ。
         },
@@ -184,7 +184,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             document.getElementsByTagName('head')[0].appendChild(ws);
         },
         createURL: function(max) {  // フィードを取得するためのURLを作成。
-            let url = "/feeds/posts/summary?alt=json-in-script&orderby=" + g.order + "&" + g.order + "-min=" + g.y + "-" + fd.fm(g.m) + "-01T00:00:00%2B09:00&" + g.order + "-max=" + max;  // 1日0時0分0秒からmaxの日時までの投稿フィードを取得。データは最新の投稿から返ってくる。
+            let url = "/feeds/posts/summary?alt=json-in-script&orderby=" + g.order + "&" + g.order + "-min=" + g.year + "-" + fd.fm(g.month) + "-01T00:00:00%2B09:00&" + g.order + "-max=" + max;  // 1日0時0分0秒からmaxの日時までの投稿フィードを取得。データは最新の投稿から返ってくる。
             url += "&callback=Calendar5_Blogger.callback.getArticles&max-results=" + g.max;  // コールバック関数と最大取得投稿数を設定。
             fd._writeScript(url);  // スクリプト注入でフィードを取得。
         },
@@ -193,7 +193,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         },
         getFeed: function(dt) {  // 日付オブジェクトからフィードを得てカレンダーを作成する。
             g.init_d(dt);  // 日付オブジェクトからカレンダーのデータを作成。
-            fd.createURL(g.y + "-" + fd.fm(g.m) + "-" + fd.fm(g.em) + "T23:59:59%2B09:00");  // フィードを取得するためのURLを作成。
+            fd.createURL(g.year + "-" + fd.fm(g.month) + "-" + fd.fm(g.lastday) + "T23:59:59%2B09:00");  // フィードを取得するためのURLを作成。
         },
         removeParam: function(thisUrl) {
             return thisUrl.replace(/\?m=[01][&\?]/, "?").replace(/[&\?]m=[01]/, "");  // ウェブバージョンとモバイルサイトのパラメータを削除。
@@ -241,7 +241,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         createPostList: function(postNo) {  // 投稿リストのタイトルを作成。2番目の引数はハイライトする投稿の要素番号。
             const d = parseInt(eh.node.textContent, 10);  // 日付を取得。
             const order = (g.order === "published") ? st.posted : st.updated;
-            pt.elem.textContent = (!st.f) ? order + ": " + st.enM[g.m - 1] + " " + d + ", " + g.y : g.y + "/" + g.m + "/" + d + "(" + st.days[eh.node.getAttribute("data-remainder")] + ") " + order;  // 投稿リストのタイトルを設定。
+            pt.elem.textContent = (!st.f) ? order + ": " + st.enM[g.month - 1] + " " + d + ", " + g.year : g.year + "/" + g.month + "/" + d + "(" + st.days[eh.node.getAttribute("data-remainder")] + ") " + order;  // 投稿リストのタイトルを設定。
             g.dic[d].forEach(function(e, i) {  // 選択している日付の投稿リストを作成。
                 pt.elem.appendChild(pt._postNode(e));
                 if (i === postNo) {  // ハイライトする投稿のとき
@@ -301,7 +301,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                     }
                     break;
                 default:
-                    const dt = new Date(g.y, g.m - 1, 1);  // 表示しているカレンダーの1日の日付オブジェクトを取得。
+                    const dt = new Date(g.year, g.month - 1, 1);  // 表示しているカレンダーの1日の日付オブジェクトを取得。
                     switch (target.id) {
                         case "title_calendar":  // 公開日と更新日を切り替える。
                             target.style.pointerEvents = "none";  // 連続クリックできないようにする。
