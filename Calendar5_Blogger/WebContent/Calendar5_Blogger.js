@@ -63,8 +63,8 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         init: function() {
             st.f = /.jp$/i.test(location.hostname);  // jpドメインのときtrueそうでなければfalse。
             st.days = (st.f) ? ["日","月","火","水","木","金","土"] : ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];  // 曜日の配列。
-            st.next_month = (st.f) ? "翌月へ" : "Newer";
-            st.prev_month = (st.f) ? "前月へ" : "Older";
+            st.next_month = (st.f) ? "翌月へ" : "Next";
+            st.prev_month = (st.f) ? "前月へ" : "Previous";
             st.posted = (st.f) ? "公開" : "Posted";
             st.updated = (st.f) ? "更新" : "Updated";
             st.tooltip = (st.f) ? "公開日と更新日を切り替える" : "Switching between published and updated";
