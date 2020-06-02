@@ -266,7 +266,7 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 const posts = g.dic[d]; // 各日付の投稿の配列を取得。
                 for (let j = 0; j < posts.length; j++) {  // 各投稿について
                     if (pt._html[0] === pt._reF.exec(posts[j])[0]) {  // 投稿のhtmlファイル名が一致するとき。フィードは.comで返ってきてTDLが異なるのでURL直接は比較できない。
-                        eh.node =  pt.dic[d];  // カレンダーの日付のノードを取得。
+                        eh.node = pt.dic[d];  // カレンダーの日付のノードを取得。
                         pt.createPostList(j);  // 投稿リストの作成。ハイライトする投稿の要素番号も渡す。
                         return;  // for文を抜ける。
                     }
