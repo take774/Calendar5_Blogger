@@ -17,7 +17,7 @@ This gadget has been tested against the browsers listed below.
 Calendar5_Blogger.defaults["StartYear"] = 2013; // The earliest year of the calendar.
 Calendar5_Blogger.defaults["StartMonth"] = 3; // The earliest month of the calendar.
 ```
-The earliest month of the calendar  is defined with a combination of the "StartYear" and "StartMonth" properties.
+The earliest month of the calendar is defined with a combination of the "StartYear" and "StartMonth" properties.
 
 ```
 Calendar5_Blogger.defaults["Holidays"] = {"2013":[[1,14],[1...],...],"2014":[[1,13],...],...};
