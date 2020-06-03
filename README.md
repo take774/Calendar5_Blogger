@@ -10,13 +10,7 @@ Eclipse Java EE IDE for Web Developers.　Version: Mars.2 Release (4.5.2)
 
 This gadget has been tested against the browsers listed below.
 
-* Chrome(Chromium)
-
-* Firefox
-
-* Microsoft Edge
-
-* Safari (iOS)
+* Google Chrome
 
 ## Parameters
 ```
@@ -31,7 +25,7 @@ Calendar5_Blogger.defaults["Holidays"] = {"2013":[[1,14],[1...],...],"2014":[[1,
 
 The date defined in JSON of the "Holidays" property will be red in the calendar.
 
-JSON has a list  of key :  value  pairs delimited by comma. 
+JSON has a list of key :  value pairs delimited by comma.
 
 The key is a year and the value is an array of arrays of containing holidays of each month of the year.
 
@@ -41,9 +35,9 @@ You can easily create the holiday JSON at  [休日のJSONの作成ツール、�
 
 ```
 <div id="calendar5_blogger"></div>
-<script> 
+<script>
 ...
-the content of Calendar5_Blogger.js or Calendar5_Blogger.min.js 
+the content of Calendar5_Blogger.js or Calendar5_Blogger.min.js
 ...
 </script>
 ```
