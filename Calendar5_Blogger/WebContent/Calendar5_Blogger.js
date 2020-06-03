@@ -295,7 +295,6 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 case "post":  // 投稿がある日のとき
                     if (eh.node) {  // 投稿一覧を表示させているノードがあるとき。
                         eh.node.style.backgroundColor = eh._rgbaC; // そのノードの背景色を元に戻す。
-                        eh.node.style.textDecoration = null;  // 文字の下線を消す。
                     }
                     eh.node = target;  // 投稿を表示させるノードを取得。
                     (g.mc) ? pt.getHighlightPostNo() : pt.createPostList(null);  // アイテムページの時
@@ -303,7 +302,6 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                 case "nopost":  // 投稿がない日のとき
                     pt.elem.textContent = null;  // 表示を消す。
                     if (eh.node) {  // 投稿一覧を表示させているノードがあるとき。
-                        eh.node.style.textDecoration = null;  // 文字の下線を消す。
                         eh.node.style.backgroundColor = eh._rgbaC;  // そのノードの背景色を元に戻す。
                         eh.node = null;  // 取得しているノードを消去。
                         target.style.pointerEvents = null;  // クリックを有効にする。
@@ -351,7 +349,6 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
         mouseOver: function(e) {
             const target = e.target;  // イベントを発生したオブジェクト。
             if (target.className === "post") {  // 投稿がある日のとき
-                target.style.textDecoration = "underline";  // 文字に下線をつける。
                 eh._fontC = window.getComputedStyle(e.target, '').color;  // 文字色を取得。
                 target.style.color = "#33aaff";  // 文字色を変える。
                 eh._rgbaC = window.getComputedStyle(e.target, '').backgroundColor;  // 背景色のRGBAを取得。
@@ -368,7 +365,6 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                     case "next_year":
                     case "prev_month":
                     case "prev_year":
-                        target.style.textDecoration = "underline";  // 文字に下線をつける。
                         eh._fontC = window.getComputedStyle(e.target, '').color;  // 文字色を取得。
                         target.style.color = "#33aaff";  // 文字色を変える。
                         break;
@@ -380,7 +376,6 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
             if (target.className === "post") {  // 投稿がある日のとき
                 target.style.color = eh._fontC;  // 変更前の文字色に戻す。
                 if (target !== eh.node) {  // そのノードの投稿一覧を表示させていないとき。
-                    target.style.textDecoration = null;  // 文字の下線を消す。
                     target.style.backgroundColor = eh._rgbaC; // 背景色を元に戻す。
                 }
             } else {
@@ -390,7 +385,6 @@ var Calendar5_Blogger = Calendar5_Blogger || function() {
                     case "next_year":
                     case "prev_month":
                     case "prev_year":
-                        target.style.textDecoration = null;  // 文字の下線を消す。
                         target.style.color = eh._fontC;  // 変更前の文字色に戻す。
                 }
             }
